@@ -60,5 +60,10 @@
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(payload),
     }),
+    parsePreferences: (prompt) => request('/api/ai/parse-preferences', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    }),
   });
 }));

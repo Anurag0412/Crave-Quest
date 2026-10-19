@@ -1,0 +1,8 @@
+{
+  "name": "CraveQuest",
+  "description": "Food discovery interface and recommendation engine connecting eaters with unique dishes across curated outlets.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

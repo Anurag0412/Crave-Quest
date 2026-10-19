@@ -5,9 +5,13 @@
   if (!api) return;
   const paths = {
     home: '/stitch_cravequest_food_discovery_interface/cravequest_home_discovery/code.html',
+    discover: '/stitch_cravequest_food_discovery_interface/cravequest_home_discovery/code.html',
     quiz: '/stitch_cravequest_food_discovery_interface/cravequest_flavor_quiz/code.html',
+    'flavor-quiz': '/stitch_cravequest_food_discovery_interface/cravequest_flavor_quiz/code.html',
     feed: '/stitch_cravequest_food_discovery_interface/cravequest_recommendation_feed/code.html',
+    'feed-matches': '/stitch_cravequest_food_discovery_interface/cravequest_recommendation_feed/code.html',
     detail: '/stitch_cravequest_food_discovery_interface/cravequest_dish_detail_quest/code.html',
+    'dish-detail': '/stitch_cravequest_food_discovery_interface/cravequest_dish_detail_quest/code.html',
   };
   const outletKey = 'cravequest.outletId';
   const requestKey = 'cravequest.recommendationRequest';
@@ -37,6 +41,16 @@
     .cq-tags{display:flex;flex-wrap:wrap;gap:6px}.cq-tag{padding:3px 8px;border-radius:999px;background:#ebefe8;font-size:12px}
     .cq-muted{font-size:12px;color:#414844}.cq-detail{max-width:900px;margin:24px auto}.cq-detail h1{font-size:clamp(28px,4vw,42px);color:#012d1d}
     .cq-detail section{padding:14px 0;border-top:1px solid #c1c8c2}.cq-inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .cq-ai-box{border:2px solid #006c48;border-radius:14px;background:#f2f8f4;padding:18px;margin:18px 0}
+    .cq-ai-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+    .cq-ai-chip-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+    .cq-chip{padding:6px 12px;border:1.5px solid #1b4332;border-radius:20px;background:#fff;font:600 12px 'Space Grotesk',sans-serif;cursor:pointer;color:#012d1d;transition:all .15s}
+    .cq-chip:hover{background:#ffdf96}
+    .cq-ai-section{margin-top:14px;padding:14px;background:#fff;border:1.5px solid #1b4332;border-radius:12px}
+    .cq-badge-hard{display:inline-block;padding:3px 8px;border-radius:6px;background:#ffdad6;color:#93000a;font:700 11px 'Space Grotesk',sans-serif;margin-right:6px}
+    .cq-badge-soft{display:inline-block;padding:3px 8px;border-radius:6px;background:#d8e8dc;color:#012d1d;font:700 11px 'Space Grotesk',sans-serif;margin-right:6px}
+    .cq-unspecified-tag{display:inline-block;padding:3px 8px;border-radius:6px;background:#eaeef0;color:#50585c;font:600 11px 'Space Grotesk',sans-serif;margin-right:6px}
+    .cq-clarify-box{background:#fff9e6;border:1.5px solid #e7c268;border-radius:10px;padding:12px;margin:12px 0}
   `;
   document.head.append(css);
 
@@ -153,7 +167,7 @@
     const place = selectedOutlet();
     card.append(el('p', 'cq-muted', `${place ? place.name : 'Selected outlet'} - ${dish.category}`));
     if (dish.description) card.append(el('p', '', dish.description));
-    card.append(el('p', 'cq-price', `${entry.price} ${entry.currencyCode}`));
+    card.append(el('p', 'cq-price', `₹${entry.price}`));
     if (recommendation) {
       card.append(el('p', 'cq-muted', `Recommendation score ${entry.score} - ${entry.reasons.map((reason) => reason.replaceAll('_', ' ')).join(', ')}`));
     }
@@ -183,15 +197,16 @@
 
   function selectedBudgetMaximum() {
     const selected = $$('.budget-pill').find((pill) => pill.className.includes('bg-primary-container'));
-    const caps = ['15', '25', '45'];
+    const caps = ['250', '500', '1200'];
     const index = $$('.budget-pill').indexOf(selected);
-    return caps[index] || '25';
+    return caps[index] || '500';
   }
 
   function removePrototypeIdentity() {
     $$('header span').forEach((span) => {
       if (span.textContent.includes('Sam P.')) span.textContent = 'Guest';
       if (span.textContent.includes('Lvl 4 Scout')) span.parentElement.hidden = true;
+      if (span.textContent.includes('SF, CA')) span.textContent = 'Bengaluru, KA';
     });
     $$('footer span').forEach((span) => {
       if (span.textContent.includes('100% Verified Taste Quests')) span.textContent = 'Ingredient and dietary data may be incomplete';
@@ -205,9 +220,280 @@
     return entriesFrom(response);
   }
 
+  function buildAiAssistantComponent({ isQuizPage = false, onApplyToForm } = {}) {
+    const box = el('section', 'cq-panel cq-ai-box');
+    box.setAttribute('aria-label', 'AI Food Discovery Assistant');
+
+    const header = el('div', 'cq-ai-header');
+    const title = el('h2', '', '✨ AI Food Discovery Assistant');
+    header.append(title);
+    box.append(header);
+
+    const desc = el('p', '', 'Describe what you crave in everyday language (e.g. cuisine, allergies, calorie targets, strict budget). The assistant translates your words into verified hard restrictions and soft ranking preferences for your confirmation before discovering dishes.');
+    box.append(desc);
+
+    const chipList = el('div', 'cq-ai-chip-list');
+    const examples = [
+      { label: '🍛 North Indian Dal Makhani & Naan under ₹500', text: "I'm looking for North Indian food at Punjab Grill, under ₹500, with a peanut allergy restriction. Calories are not important." },
+      { label: '🥞 Crisp Ghee Roast Masala Dosa', text: "I want South Indian food at Dakshin Rasoi, preferably a crisp dosa with coconut chutney and no dairy restriction." },
+      { label: '🍚 Hyderabadi Dum Biryani ~650 kcal', text: "Looking for high protein Hyderabadi Biryani around 650 calories at Biryani Darbar, under ₹450." },
+      { label: '🥗 Pure Veg Gluten-Free Thali', text: "I want a pure vegetarian gluten-free meal at Copper Tiffin, between ₹200 and ₹500." },
+      { label: '💰 Affordable street food (clarify budget)', text: "I'm craving an affordable meal with rice and vegetables." },
+    ];
+    examples.forEach((ex) => {
+      const chip = el('button', 'cq-chip', ex.label);
+      chip.type = 'button';
+      chip.addEventListener('click', () => {
+        promptArea.value = ex.text;
+        promptArea.focus();
+      });
+      chipList.append(chip);
+    });
+    box.append(chipList);
+
+    const promptArea = document.createElement('textarea');
+    promptArea.rows = 2;
+    promptArea.placeholder = 'e.g., "I\'m looking for North Indian food at Punjab Grill, between ₹250 and ₹500, with a peanut allergy restriction. Calories are not important."';
+    promptArea.style.cssText = 'box-sizing:border-box;width:100%;padding:10px;border:2px solid #1b4332;border-radius:10px;font:14px "Plus Jakarta Sans",sans-serif;resize:vertical';
+    box.append(promptArea);
+
+    const actionRow = el('div', 'cq-inline');
+    actionRow.style.marginTop = '10px';
+    const interpretBtn = el('button', 'cq-button', 'Interpret Craving with AI');
+    interpretBtn.type = 'button';
+    actionRow.append(interpretBtn);
+    box.append(actionRow);
+
+    const resultContainer = el('div');
+    resultContainer.style.marginTop = '14px';
+    box.append(resultContainer);
+
+    interpretBtn.addEventListener('click', async () => {
+      const prompt = promptArea.value.trim();
+      if (!prompt) return notice(resultContainer, 'Please enter a description of what you are craving.', true);
+      interpretBtn.disabled = true;
+      interpretBtn.textContent = 'Interpreting preferences…';
+      resultContainer.replaceChildren();
+
+      try {
+        const resp = await api.parsePreferences(prompt);
+        const data = resp.data || {};
+
+        if (data.restaurant) {
+          const matched = outlets.find((o) => o.name.toLowerCase().includes(data.restaurant.toLowerCase()) || data.restaurant.toLowerCase().includes(o.name.toLowerCase()));
+          if (matched) {
+            setOutlet(matched.id);
+          }
+        }
+
+        const card = el('div', 'cq-ai-section');
+        const badgeRow = el('div', 'cq-inline');
+        badgeRow.append(el('span', 'cq-badge-soft', resp.source === 'gemini' ? 'AI Provider: Gemini 3.8 Flash' : 'Language Rule Parser (Offline / Fallback)'));
+        if (data.restaurant) {
+          badgeRow.append(el('span', 'cq-tag', `Mentioned Restaurant: ${data.restaurant}`));
+        }
+        card.append(badgeRow);
+
+        let clarifiedMaxPrice = data.hardRestrictions?.maxPrice || '';
+        if (data.clarificationQuestion) {
+          const clarifyBox = el('div', 'cq-clarify-box');
+          clarifyBox.append(el('h4', '', `Clarification Needed: ${data.clarificationQuestion}`));
+          clarifyBox.append(el('p', 'cq-muted', 'You mentioned a general term (like "affordable"). Please specify a maximum budget:'));
+          const clarifyInput = document.createElement('input');
+          clarifyInput.type = 'number';
+          clarifyInput.placeholder = 'e.g. 25';
+          clarifyInput.style.cssText = 'padding:6px 10px;border:1.5px solid #1b4332;border-radius:6px;width:120px';
+          clarifyBox.append(label('Maximum budget', clarifyInput));
+          clarifyInput.addEventListener('input', () => {
+            clarifiedMaxPrice = clarifyInput.value.trim();
+            if (editMaxPrice) editMaxPrice.value = clarifiedMaxPrice;
+          });
+          card.append(clarifyBox);
+        }
+
+        const hardSec = el('div');
+        hardSec.style.marginTop = '12px';
+        hardSec.append(el('h4', '', '🛑 Hard Restrictions (Safety & Strict Limits — Applied First)'));
+        hardSec.append(el('p', 'cq-muted', 'Safety notice: Missing or unverified ingredient/allergen data fails closed and is excluded. Dishes are not claimed to be medically allergen-free.'));
+
+        const hardFields = el('div', 'cq-fields');
+        const editAllergens = document.createElement('input');
+        editAllergens.value = (data.hardRestrictions?.allergens || []).join(', ');
+        editAllergens.placeholder = 'e.g. peanuts, dairy';
+        hardFields.append(label('Allergens to avoid (hard exclusion)', editAllergens));
+
+        const editIngredients = document.createElement('input');
+        editIngredients.value = (data.hardRestrictions?.ingredients || []).join(', ');
+        editIngredients.placeholder = 'e.g. sesame, shellfish';
+        hardFields.append(label('Ingredients to avoid', editIngredients));
+
+        const editMinPrice = document.createElement('input');
+        editMinPrice.type = 'number';
+        editMinPrice.placeholder = 'Any';
+        editMinPrice.value = data.hardRestrictions?.minPrice || '';
+        hardFields.append(label('Minimum price (exclusive bound)', editMinPrice));
+
+        const editMaxPrice = document.createElement('input');
+        editMaxPrice.type = 'number';
+        editMaxPrice.placeholder = 'Any';
+        editMaxPrice.value = clarifiedMaxPrice || data.hardRestrictions?.maxPrice || '';
+        hardFields.append(label('Maximum price (exclusive bound)', editMaxPrice));
+
+        hardSec.append(hardFields);
+        card.append(hardSec);
+
+        const softSec = el('div');
+        softSec.style.marginTop = '12px';
+        softSec.append(el('h4', '', '🎯 Soft Preferences (Used for Ranking — Does Not Exclude Dishes)'));
+        const softFields = el('div', 'cq-fields');
+
+        const editCuisine = document.createElement('input');
+        editCuisine.value = (data.preferences?.cuisineTypes || (data.cuisine ? [data.cuisine] : [])).join(', ');
+        editCuisine.placeholder = 'e.g. Thai, Modern American';
+        softFields.append(label('Preferred cuisine', editCuisine));
+
+        const editCategory = document.createElement('input');
+        editCategory.value = (data.preferences?.categories || []).join(', ');
+        editCategory.placeholder = 'e.g. main, soup';
+        softFields.append(label('Preferred category', editCategory));
+
+        const editCalories = document.createElement('input');
+        editCalories.type = 'number';
+        editCalories.placeholder = data.caloriesDisregarded ? 'Ignored' : 'e.g. 600';
+        editCalories.value = data.preferences?.targetCalories || '';
+        softFields.append(label(data.caloriesDisregarded ? 'Target calories (Explicitly marked not important)' : 'Target calories', editCalories));
+
+        const editProtein = document.createElement('input');
+        editProtein.type = 'number';
+        editProtein.placeholder = 'e.g. 20';
+        editProtein.value = data.preferences?.targetProtein || (data.preferences?.highProtein ? '20' : '');
+        softFields.append(label('Protein target (g, when verified)', editProtein));
+
+        softSec.append(softFields);
+        card.append(softSec);
+
+        if (Array.isArray(data.unspecifiedFields) && data.unspecifiedFields.length) {
+          const unspecSec = el('div');
+          unspecSec.style.marginTop = '10px';
+          unspecSec.append(el('p', 'cq-muted', 'ℹ️ Parameters not specified (no silent assumptions made):'));
+          const unspecList = el('div', 'cq-inline');
+          data.unspecifiedFields.forEach((field) => {
+            unspecList.append(el('span', 'cq-unspecified-tag', field));
+          });
+          unspecSec.append(unspecList);
+          card.append(unspecSec);
+        }
+
+        const buttonRow = el('div', 'cq-inline');
+        buttonRow.style.marginTop = '16px';
+
+        const confirmBtn = el('button', 'cq-button', 'Confirm Preferences & Find Dishes');
+        confirmBtn.type = 'button';
+        buttonRow.append(confirmBtn);
+
+        if (isQuizPage && onApplyToForm) {
+          const populateBtn = el('button', 'cq-link', 'Copy to Quiz Form Below');
+          populateBtn.type = 'button';
+          populateBtn.addEventListener('click', () => {
+            onApplyToForm({
+              cuisine: editCuisine.value.trim(),
+              category: editCategory.value.trim(),
+              allergens: editAllergens.value.trim(),
+              ingredients: editIngredients.value.trim(),
+              maxPrice: editMaxPrice.value.trim(),
+            });
+            notice(resultContainer, 'Preferences copied into the form below! You can further refine and submit.');
+          });
+          buttonRow.append(populateBtn);
+        }
+
+        card.append(buttonRow);
+
+        const recommendationsMount = el('div');
+        recommendationsMount.style.marginTop = '16px';
+        card.append(recommendationsMount);
+
+        confirmBtn.addEventListener('click', async () => {
+          if (!currentOutletId) return notice(card, 'Please select an outlet first to evaluate dishes.', true);
+          confirmBtn.disabled = true;
+          confirmBtn.textContent = 'Discovering eligible dishes…';
+          recommendationsMount.replaceChildren();
+
+          const allergensList = parseList(editAllergens.value);
+          const ingredientsList = parseList(editIngredients.value);
+          const cuisineList = parseList(editCuisine.value);
+          const categoryList = parseList(editCategory.value);
+          const minP = editMinPrice.value.trim() || undefined;
+          const maxP = editMaxPrice.value.trim() || undefined;
+          const cal = editCalories.value.trim() ? Number(editCalories.value.trim()) : undefined;
+          const prot = editProtein.value.trim() ? Number(editProtein.value.trim()) : undefined;
+
+          const payload = {
+            outletId: currentOutletId,
+            preferences: {
+              cuisineTypes: cuisineList,
+              categories: categoryList,
+              minPrice: minP,
+              maxPrice: maxP,
+              targetCalories: cal,
+              targetProtein: prot,
+            },
+            hardRestrictions: {
+              allergens: allergensList,
+              ingredients: ingredientsList,
+              dietaryTags: [],
+              minPrice: minP,
+              maxPrice: maxP,
+              minPriceExclusive: Boolean(data.hardRestrictions?.minPriceExclusive || (minP && maxP)),
+              maxPriceExclusive: Boolean(data.hardRestrictions?.maxPriceExclusive || (minP && maxP)),
+            },
+          };
+
+          sessionStorage.setItem(requestKey, JSON.stringify(payload));
+
+          try {
+            const recResult = await api.recommend(payload);
+            const statusMsg = el('p', 'cq-note', `${recResult.eligibleCount} dish${recResult.eligibleCount === 1 ? '' : 'es'} matched safety restrictions and preferences (${recResult.excludedCount} excluded from ${recResult.totalAvailableCount} available menu entries).`);
+            recommendationsMount.append(statusMsg);
+
+            if (recResult.warnings?.length) {
+              renderWarnings(recommendationsMount, recResult.warnings);
+            }
+
+            const recGrid = el('div', 'cq-card-grid');
+            if (!recResult.data.length) {
+              recGrid.append(el('p', 'cq-note', 'No dishes at this outlet met all hard restrictions. Safety rules strictly exclude unknown or missing allergen and ingredient records.'));
+            } else {
+              recResult.data.forEach((entry) => {
+                recGrid.append(makeDishCard(entry, true));
+              });
+            }
+            recommendationsMount.append(recGrid);
+          } catch (recErr) {
+            notice(recommendationsMount, recErr.message, true);
+          } finally {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Confirm Preferences & Find Dishes';
+          }
+        });
+
+        resultContainer.append(card);
+      } catch (err) {
+        notice(resultContainer, err.message, true);
+      } finally {
+        interpretBtn.disabled = false;
+        interpretBtn.textContent = 'Interpret Craving with AI';
+      }
+    });
+
+    return box;
+  }
+
   async function initHome() {
     const { panel, select } = mountPanel('Browse current menus', 'Select an outlet to search its published, currently available dishes.');
     wireOutlet(panel, select);
+    const aiAssistant = buildAiAssistantComponent();
+    panel.after(aiAssistant);
     const sections = $$('main > div > section');
     [sections[1], sections[2], sections[4]].filter(Boolean).forEach((section) => { section.hidden = true; });
     const heroCopy = $$('main p').find((node) => node.textContent.includes('Our AI food compass'));
@@ -304,6 +590,46 @@
     const submit = el('button', 'cq-button', 'Find eligible dishes'); submit.type = 'submit';
     form.append(submit);
     const status = notice(panel, 'Loading outlet and menu choices...');
+    const aiAssistant = buildAiAssistantComponent({
+      isQuizPage: true,
+      onApplyToForm: ({ category: cat, allergens: alg, ingredients: ing, maxPrice: mp }) => {
+        if (cat) {
+          for (let i = 0; i < category.options.length; i++) {
+            if (category.options[i].value.toLowerCase() === cat.toLowerCase()) {
+              category.selectedIndex = i;
+              break;
+            }
+          }
+        }
+        if (alg) allergens.value = alg;
+        if (ing) ingredients.value = ing;
+        if (mp) budget.value = mp;
+
+        // Synchronize with the 4-step Stitch quiz UI
+        if (window.quizState) {
+          if (mp) window.quizState.budget = mp;
+          if (alg) {
+            const list = alg.split(',').map((s) => s.trim().toLowerCase());
+            window.quizState.exclusions = list;
+            $$('.exclusion-chip').forEach((chip) => {
+              const excl = chip.dataset.exclude?.toLowerCase();
+              if (list.includes(excl)) {
+                chip.classList.add('bg-error-container', 'text-on-error-container');
+                chip.classList.remove('bg-surface-container-lowest', 'text-primary');
+              }
+            });
+          }
+          if (ing) {
+            const customInput = $('#quiz-custom-exclusion-input');
+            if (customInput) customInput.value = ing;
+          }
+        }
+        if (typeof window.showQuizStep === 'function') {
+          window.showQuizStep(3);
+        }
+      },
+    });
+    panel.append(aiAssistant);
     panel.append(form);
 
     const refreshChoices = async () => {
@@ -331,14 +657,31 @@
         category.replaceChildren(new Option('No category preference', ''));
         tagSelect.replaceChildren();
         void refreshChoices();
+        if (window.quizState && typeof window.showQuizStep === 'function' && window.quizState.step === 4) {
+          window.showQuizStep(4);
+        }
       }
     });
     if (currentOutletId) await refreshChoices();
     else status.textContent = outlets.length ? 'Choose an outlet before setting recommendation preferences.' : 'No active outlets are available from the API.';
     $$('.budget-pill').forEach((pill, index) => pill.addEventListener('click', () => {
-      const caps = ['15', '25', '45'];
+      const caps = ['250', '500', '1200'];
       budget.value = caps[index] || '';
+      if (window.quizState) window.quizState.budget = caps[index] || '500';
     }));
+
+    // Connect Stitch quiz tabs and buttons
+    $('#quiz-tab-1')?.addEventListener('click', () => window.showQuizStep?.(1));
+    $('#quiz-tab-2')?.addEventListener('click', () => window.showQuizStep?.(2));
+    $('#quiz-tab-3')?.addEventListener('click', () => window.showQuizStep?.(3));
+    $('#quiz-tab-4')?.addEventListener('click', () => window.showQuizStep?.(4));
+    $('#btn-next-step-1')?.addEventListener('click', () => window.showQuizStep?.(2));
+    $('#btn-back-step-2')?.addEventListener('click', () => window.showQuizStep?.(1));
+    $('#btn-next-step-2')?.addEventListener('click', () => window.showQuizStep?.(3));
+    $('#btn-back-step-3')?.addEventListener('click', () => window.showQuizStep?.(2));
+    $('#btn-unlock-matches')?.addEventListener('click', () => window.showQuizStep?.(4));
+    $('#btn-back-step-4')?.addEventListener('click', () => window.showQuizStep?.(3));
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!currentOutletId) return notice(panel, 'Choose an outlet before requesting recommendations.', true);
@@ -404,55 +747,151 @@
     else status.textContent = outlets.length ? 'Choose an outlet to load recommendations.' : 'No active outlets are available from the API.';
   }
 
-  function showDetails(data) {
-    const main = $('main');
-    [...main.children].forEach((node) => { node.hidden = true; });
-    const view = el('article', 'cq-panel cq-detail');
-    view.append(el('p', 'cq-muted', `${data.outlet.name} - ${data.outlet.cuisineType}`));
-    view.append(el('h1', '', data.dish.name));
-    if (data.dish.description) view.append(el('p', '', data.dish.description));
-    for (const entry of data.menuEntries) view.append(el('p', 'cq-price', `${entry.price} ${entry.currencyCode} - ${entry.menu.name} - ${entry.availabilityStatus}`));
-    renderWarnings(view, data.dish.dataWarnings);
-    const ingredients = el('section'); ingredients.append(el('h2', '', 'Ingredient information'));
-    ingredients.append(el('p', 'cq-muted', `Status: ${data.dish.ingredientData.status}.`));
-    if (data.dish.ingredients.length) {
-      const list = el('ul');
-      for (const ingredient of data.dish.ingredients) list.append(el('li', '', `${ingredient.name}: ${ingredient.presenceStatus}; ${ingredient.verificationStatus}`));
-      ingredients.append(list);
-    } else ingredients.append(el('p', '', 'No ingredient rows are available. This is unknown information, not evidence of absence.'));
-    view.append(ingredients);
-    const allergens = el('section'); allergens.append(el('h2', '', 'Known allergen associations'));
-    const known = data.dish.allergens.knownAssociations;
-    allergens.append(el('p', '', known.length
-      ? known.map((association) => `${association.name} (${association.verificationStatus}; ingredient ${association.ingredientVerificationStatus})`).join(', ')
-      : 'No positive allergen association is recorded. Missing associations do not establish that this dish is allergen-free.'));
-    view.append(allergens);
-    const tags = el('section'); tags.append(el('h2', '', 'Dietary tags'));
-    tags.append(el('p', '', data.dish.dietaryTags.tags.length
-      ? data.dish.dietaryTags.tags.map((tag) => `${tag.label} (${tag.verificationStatus})`).join(', ')
-      : 'No dietary tags are recorded.'));
-    view.append(tags);
-    const actions = el('div', 'cq-inline');
-    const back = el('a', 'cq-link', 'Browse current menu'); back.href = paths.home;
-    actions.append(back); view.append(actions);
-    main.append(view);
+  function populateDetailElements(data) {
+    const dish = data.dish;
+    const outlet = data.outlet;
+    const entry = data.menuEntries[0];
+
+    // Ensure back to feed button works
+    const backBtn = $('#backToFeedBtn');
+    if (backBtn) {
+      backBtn.href = paths.feed;
+      backBtn.onclick = (e) => {
+        e.preventDefault();
+        window.location.href = paths.feed;
+      };
+    }
+
+    // Wire explore other matched dishes button
+    const exploreOther = $('#exploreOtherOutletDishesBtn') || $$('a').find((a) => a.textContent.includes('Other Matched Dishes'));
+    if (exploreOther) {
+      exploreOther.href = paths.feed;
+      exploreOther.onclick = (e) => {
+        e.preventDefault();
+        if (outlet?.id) setOutlet(outlet.id);
+        window.location.href = paths.feed;
+      };
+      const exploreSpan = exploreOther.querySelector('span');
+      if (exploreSpan && outlet?.name) {
+        exploreSpan.textContent = `Explore Other Matched Dishes at ${outlet.name}`;
+      }
+    }
+
+    // Breadcrumbs update
+    const breadcrumbSpans = $$('div.flex.items-center.gap-space-xs span');
+    const outletSpan = breadcrumbSpans.find((s) => s.classList.contains('text-primary') && s.classList.contains('font-bold'));
+    if (outletSpan) outletSpan.textContent = outlet.name;
+    const dishSpan = breadcrumbSpans.find((s) => s.classList.contains('text-secondary') && s.classList.contains('font-bold'));
+    if (dishSpan) dishSpan.textContent = dish.name;
+
+    // Title and description
+    const title = $('h1');
+    if (title) title.textContent = dish.name;
+    const desc = title?.nextElementSibling;
+    if (desc && dish.description) desc.textContent = dish.description;
+
+    // Price sticker (Rupee)
+    if (entry) {
+      const priceBadge = $$('div').find((d) => d.textContent.trim().startsWith('₹') || d.textContent.trim().startsWith('$'));
+      if (priceBadge) {
+        priceBadge.innerHTML = `<span>₹${entry.price}</span>`;
+      }
+    }
+
+    // Host Outpost restaurant dossier
+    const hostHeader = $$('h2').find((h) => h.textContent.includes('Dragon Whisker') || h.textContent.includes('Punjab Grill') || h.textContent.includes('Host Outpost') || h.previousElementSibling?.textContent?.includes('Host Outpost'));
+    if (hostHeader) {
+      hostHeader.textContent = outlet.name;
+      const addrP = hostHeader.nextElementSibling;
+      if (addrP) addrP.textContent = `${outlet.address_line}, ${outlet.city}`;
+    }
+
+    // Data warnings & Allergen notice
+    let warningsBox = $('#cq-detail-warnings');
+    if (!warningsBox) {
+      warningsBox = el('div', 'cq-note cq-muted');
+      warningsBox.id = 'cq-detail-warnings';
+      warningsBox.style.margin = '16px 0';
+      if (title && title.parentElement) {
+        title.parentElement.insertBefore(warningsBox, desc?.nextSibling || title.nextSibling);
+      }
+    }
+    const warnings = dish.dataWarnings || [];
+    warningsBox.textContent = warnings.length
+      ? `Data quality: ${warnings.map((w) => w.replaceAll('_', ' ')).join('; ')}. Missing or unverified food data does not establish allergy safety.`
+      : 'Ingredient, allergen, and dietary verification records loaded. Not a guarantee of medical safety.';
+
+    // Ingredients list
+    if (dish.ingredients && dish.ingredients.length) {
+      const ul = $('ul.divide-y');
+      if (ul) {
+        ul.replaceChildren();
+        dish.ingredients.forEach((ing) => {
+          const li = el('li', 'py-1.5 flex justify-between items-center');
+          const nameSpan = el('span', 'font-semibold text-on-surface', ing.name);
+          const statSpan = el('span', 'text-on-surface-variant text-right', `${ing.presenceStatus} (${ing.verificationStatus})`);
+          li.append(nameSpan, statSpan);
+          ul.append(li);
+        });
+      }
+    }
+
+    // Dietary tags
+    if (dish.dietaryTags?.tags?.length) {
+      const tagContainer = $('.mt-3.pt-3.border-t.border-primary\\/20');
+      if (tagContainer) {
+        tagContainer.replaceChildren();
+        dish.dietaryTags.tags.forEach((t) => {
+          const badge = el('span', 'px-2.5 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full font-label-sm text-label-sm border border-primary/40 font-semibold', `${t.label} (${t.verificationStatus})`);
+          tagContainer.append(badge);
+        });
+      }
+    }
+
+    // Extra explicit Back to Feed button for high accessibility
+    let extraBack = $('#cq-extra-back-feed');
+    if (!extraBack) {
+      extraBack = el('div', 'mt-4 flex gap-3 flex-wrap');
+      extraBack.id = 'cq-extra-back-feed';
+      const backLink = el('a', 'cq-button', '← Back to Feed & Matches');
+      backLink.href = paths.feed;
+      backLink.onclick = (e) => {
+        e.preventDefault();
+        window.location.href = paths.feed;
+      };
+      extraBack.append(backLink);
+      title?.parentElement?.append(extraBack);
+    }
   }
 
   async function initDetail() {
-    const main = $('main');
     updateHeaderOutlet(selectedOutlet());
-    [...main.children].forEach((node) => { node.hidden = true; });
-    const loading = el('section', 'cq-panel cq-detail', 'Loading dish details...'); main.prepend(loading);
+
+    // Explicitly configure and wire the Back to Feed button
+    const backBtn = $('#backToFeedBtn');
+    if (backBtn) {
+      backBtn.href = paths.feed;
+      backBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = paths.feed;
+      });
+    }
+
     const dishId = new URLSearchParams(location.search).get('dishId');
     if (!dishId || !/^[1-9]\d{0,18}$/.test(dishId)) {
-      loading.textContent = 'Select a dish from a live menu to view its details.';
+      // Direct view of featured dish; keep Stitch UI intact and ensure back to feed works
       return;
     }
+
     try {
       const response = await api.getDish(dishId);
       if (!response.data || !response.data.dish) throw new Error('The dish response was incomplete.');
-      loading.remove(); showDetails(response.data);
-    } catch (error) { loading.textContent = ''; notice(loading, error.message, true); }
+      populateDetailElements(response.data);
+    } catch (error) {
+      const main = $('main');
+      const errBox = el('div', 'cq-note cq-error', `Could not load dish #${dishId}: ${error.message}`);
+      main?.prepend(errBox);
+    }
   }
 
   function wireNavigation() {
@@ -464,6 +903,16 @@
       }
       link.href = paths[path] || paths.home;
     });
+
+    const backBtn = $('#backToFeedBtn');
+    if (backBtn) {
+      backBtn.href = paths.feed;
+      backBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = paths.feed;
+      });
+    }
+
     const logo = $('header a');
     if (logo) logo.href = paths.home;
     const search = $('header input[type="text"]');

@@ -226,10 +226,12 @@ function menuWhere(outletId, filters, dishId) {
      )`,
   );
 
-  if (filters.availability && filters.availability !== 'all') {
-    add('md.availability_status = ?', filters.availability);
+  if (filters.availability === 'all') {
+    // No availability filter
   } else if (!filters.availability || filters.availability === 'available') {
     where.push("md.availability_status = 'available'");
+  } else {
+    add('md.availability_status = ?', filters.availability);
   }
   if (filters.search) {
     values.push(escapeLike(filters.search));
@@ -392,6 +394,11 @@ function dishJson(row) {
       dataStatus: row.dietary_data_status,
       tags: row.dietary_tags,
     },
+    nutrition: row.nutrition || {
+      calories: row.calories ?? null,
+      protein: row.protein ?? null,
+      status: row.nutrition_status || (row.calories ? 'verified' : 'missing'),
+    },
     dataWarnings: dataWarnings(row),
   };
 }
@@ -474,35 +481,143 @@ async function getDish(pool, dishId) {
 }
 
 function parsePreferencePayload(body) {
-  assertAllowedKeys(body, new Set(['outletId', 'limit', 'preferences', 'hardRestrictions']), 'Request body');
-  const outletId = parseId(String(body.outletId ?? ''), 'outletId');
+  assertAllowedKeys(body, new Set([
+    'outletId', 'restaurant', 'limit', 'preferences', 'hardRestrictions',
+  ]), 'Request body');
+
+  let outletId = null;
+  let restaurant = null;
+  if (body.outletId !== undefined && body.outletId !== null && String(body.outletId).trim() !== '') {
+    const rawOutletId = String(body.outletId).trim();
+    if (/^\d+$/.test(rawOutletId)) {
+      outletId = parseId(rawOutletId, 'outletId');
+    } else {
+      restaurant = rawOutletId;
+    }
+  }
+  if (body.restaurant !== undefined && body.restaurant !== null && String(body.restaurant).trim() !== '') {
+    restaurant = String(body.restaurant).trim();
+  }
+
   const limit = body.limit === undefined ? 10 : body.limit;
   if (!Number.isInteger(limit) || limit < 1 || limit > 50) fail(400, 'invalid_limit', 'limit must be an integer from 1 to 50.');
 
   const preferences = assertObject(body.preferences ?? {}, 'preferences');
-  assertAllowedKeys(preferences, new Set(['cuisineTypes', 'categories', 'maxPrice']), 'preferences');
+  assertAllowedKeys(preferences, new Set([
+    'cuisineTypes', 'cuisine', 'categories', 'category', 'maxPrice', 'minPrice',
+    'targetCalories', 'calorieTarget', 'desiredIngredients', 'targetProtein', 'highProtein',
+  ]), 'preferences');
+
   const hardRestrictions = assertObject(body.hardRestrictions ?? {}, 'hardRestrictions');
-  assertAllowedKeys(hardRestrictions, new Set(['allergens', 'ingredients', 'dietaryTags']), 'hardRestrictions');
+  assertAllowedKeys(hardRestrictions, new Set([
+    'allergens', 'ingredients', 'dietaryTags', 'minPrice', 'maxPrice',
+    'minPriceExclusive', 'maxPriceExclusive', 'priceRange',
+  ]), 'hardRestrictions');
+
+  let rawCuisines = [];
+  if (preferences.cuisineTypes !== undefined) {
+    rawCuisines = parseStringArray(preferences.cuisineTypes, 'preferences.cuisineTypes');
+  } else if (preferences.cuisine !== undefined && preferences.cuisine !== null) {
+    if (typeof preferences.cuisine === 'string' && preferences.cuisine.trim()) {
+      rawCuisines = [preferences.cuisine.trim()];
+    }
+  }
+
+  let rawCategories = [];
+  if (preferences.categories !== undefined) {
+    rawCategories = parseStringArray(preferences.categories, 'preferences.categories');
+  } else if (preferences.category !== undefined && preferences.category !== null) {
+    if (typeof preferences.category === 'string' && preferences.category.trim()) {
+      rawCategories = [preferences.category.trim()];
+    }
+  }
 
   let maxPrice;
-  if (preferences.maxPrice !== undefined) {
-    const text = typeof preferences.maxPrice === 'number' ? String(preferences.maxPrice) : preferences.maxPrice;
-    if (typeof text !== 'string') fail(400, 'invalid_price', 'preferences.maxPrice must be a nonnegative amount.');
+  if (preferences.maxPrice !== undefined && preferences.maxPrice !== null && String(preferences.maxPrice).trim() !== '') {
+    const text = typeof preferences.maxPrice === 'number' ? String(preferences.maxPrice) : String(preferences.maxPrice).trim();
     maxPrice = parseDecimal(text, 'preferences.maxPrice');
   }
+
+  let minPrice;
+  if (preferences.minPrice !== undefined && preferences.minPrice !== null && String(preferences.minPrice).trim() !== '') {
+    const text = typeof preferences.minPrice === 'number' ? String(preferences.minPrice) : String(preferences.minPrice).trim();
+    minPrice = parseDecimal(text, 'preferences.minPrice');
+  }
+
+  let targetCalories;
+  const rawCal = preferences.targetCalories ?? preferences.calorieTarget;
+  if (rawCal !== undefined && rawCal !== null && String(rawCal).trim() !== '') {
+    const parsed = Number(rawCal);
+    if (!Number.isSafeInteger(parsed) || parsed < 0 || parsed > 10_000) {
+      fail(400, 'invalid_calories', 'targetCalories must be a non-negative integer.');
+    }
+    targetCalories = parsed;
+  }
+
+  const desiredIngredients = preferences.desiredIngredients !== undefined
+    ? parseStringArray(preferences.desiredIngredients, 'preferences.desiredIngredients')
+    : [];
+
+  let targetProtein;
+  if (preferences.targetProtein !== undefined && preferences.targetProtein !== null) {
+    const parsed = Number(preferences.targetProtein);
+    if (isNaN(parsed) || parsed < 0) {
+      fail(400, 'invalid_protein', 'targetProtein must be a non-negative number.');
+    }
+    targetProtein = parsed;
+  } else if (preferences.highProtein) {
+    targetProtein = 20;
+  }
+
+  let hardMinPrice;
+  let hardMaxPrice;
+  let minPriceExclusive = Boolean(hardRestrictions.minPriceExclusive);
+  let maxPriceExclusive = Boolean(hardRestrictions.maxPriceExclusive);
+
+  if (hardRestrictions.priceRange && typeof hardRestrictions.priceRange === 'object') {
+    const pr = hardRestrictions.priceRange;
+    if (pr.min !== undefined && pr.min !== null) {
+      hardMinPrice = parseDecimal(String(pr.min).trim(), 'hardRestrictions.priceRange.min');
+      if (pr.minExclusive !== undefined) minPriceExclusive = Boolean(pr.minExclusive);
+    }
+    if (pr.max !== undefined && pr.max !== null) {
+      hardMaxPrice = parseDecimal(String(pr.max).trim(), 'hardRestrictions.priceRange.max');
+      if (pr.maxExclusive !== undefined) maxPriceExclusive = Boolean(pr.maxExclusive);
+    }
+  }
+
+  if (hardRestrictions.minPrice !== undefined && hardRestrictions.minPrice !== null && String(hardRestrictions.minPrice).trim() !== '') {
+    hardMinPrice = parseDecimal(String(hardRestrictions.minPrice).trim(), 'hardRestrictions.minPrice');
+  }
+  if (hardRestrictions.maxPrice !== undefined && hardRestrictions.maxPrice !== null && String(hardRestrictions.maxPrice).trim() !== '') {
+    hardMaxPrice = parseDecimal(String(hardRestrictions.maxPrice).trim(), 'hardRestrictions.maxPrice');
+  }
+
+  if (hardMinPrice !== undefined && hardMaxPrice !== undefined && Number(hardMinPrice) > Number(hardMaxPrice)) {
+    fail(400, 'invalid_price_range', 'minPrice must not exceed maxPrice.');
+  }
+
   return {
     outletId,
+    restaurant,
     limit,
     preferences: {
-      cuisineTypes: parseStringArray(preferences.cuisineTypes, 'preferences.cuisineTypes'),
-      categories: parseStringArray(preferences.categories, 'preferences.categories'),
+      cuisineTypes: rawCuisines,
+      categories: rawCategories,
       maxPrice,
+      minPrice,
+      targetCalories,
+      desiredIngredients,
+      targetProtein,
     },
     hardRestrictions: {
       allergens: parseStringArray(hardRestrictions.allergens, 'hardRestrictions.allergens'),
       ingredients: parseStringArray(hardRestrictions.ingredients, 'hardRestrictions.ingredients'),
-      // These positive dish claims are required values, not tags to exclude.
       requiredDietaryTags: parseStringArray(hardRestrictions.dietaryTags, 'hardRestrictions.dietaryTags'),
+      minPrice: hardMinPrice,
+      maxPrice: hardMaxPrice,
+      minPriceExclusive,
+      maxPriceExclusive,
     },
   };
 }
@@ -513,32 +628,72 @@ function safetyFilter(entries, restrictions) {
   const warnings = new Set();
 
   for (const row of entries) {
-    const ingredientsKnown = row.ingredient_data_status === 'verified_complete'
-      && row.ingredients.length > 0
-      && row.ingredients.every((ingredient) => ingredient.verificationStatus === 'verified');
     const reasons = [];
     const verifiedDietaryReasons = [];
 
-    for (const allergen of restrictions.allergens) {
-      const knownViolation = row.allergen_links.some((link) => link.name === allergen
-        && link.verificationStatus === 'verified'
-        && link.ingredientVerificationStatus === 'verified');
-      reasons.push(knownViolation ? 'allergen_match' : 'allergen_safety_unknown');
-      if (!knownViolation) warnings.add('allergen_safety_cannot_be_verified');
+    // Strict min price check
+    if (restrictions.minPrice !== undefined) {
+      const min = Number(restrictions.minPrice);
+      const price = Number(row.price);
+      const ok = restrictions.minPriceExclusive ? price > min : price >= min;
+      if (!ok) {
+        reasons.push('price_below_minimum');
+      }
     }
 
+    // Strict max price check
+    if (restrictions.maxPrice !== undefined) {
+      const max = Number(restrictions.maxPrice);
+      const price = Number(row.price);
+      const ok = restrictions.maxPriceExclusive ? price < max : price <= max;
+      if (!ok) {
+        reasons.push('price_exceeds_maximum');
+      }
+    }
+
+    // Conservative Allergen check
+    const ingredientsCompleteAndVerified = row.ingredient_data_status === 'verified_complete'
+      && Array.isArray(row.ingredients)
+      && row.ingredients.length > 0
+      && row.ingredients.every((ing) => ing.verificationStatus === 'verified');
+
+    for (const allergen of restrictions.allergens) {
+      const allergenLower = allergen.toLowerCase();
+      const knownViolation = Array.isArray(row.allergen_links) && row.allergen_links.some((link) => {
+        return link.name.toLowerCase() === allergenLower
+          && (link.verificationStatus === 'verified' || link.ingredientVerificationStatus === 'verified' || link.presenceStatus === 'contains');
+      });
+
+      if (knownViolation) {
+        reasons.push('allergen_match');
+      } else if (ingredientsCompleteAndVerified && (row.allergen_data_status === 'complete' || row.allergen_data_status === 'verified')) {
+        // Candidate A: verified complete ingredients and absence of allergen
+        verifiedDietaryReasons.push(`verified_allergen_free:${allergen}`);
+      } else {
+        // Candidate B (incomplete) or Candidate C (unverified)
+        reasons.push('allergen_safety_unknown');
+        warnings.add('allergen_safety_cannot_be_verified');
+      }
+    }
+
+    // Excluded ingredients check
     if (restrictions.ingredients.length > 0) {
-      if (!ingredientsKnown) {
+      if (!ingredientsCompleteAndVerified) {
         reasons.push('ingredient_data_unknown');
         warnings.add('ingredient_data_incomplete_for_exclusion');
-      } else if (row.ingredients.some((ingredient) => restrictions.ingredients.includes(ingredient.name)
-        && ['contains', 'may_contain'].includes(ingredient.presenceStatus))) {
+      } else if (row.ingredients.some((ingredient) => {
+        return restrictions.ingredients.map((i) => i.toLowerCase()).includes(ingredient.name.toLowerCase())
+          && ['contains', 'may_contain'].includes(ingredient.presenceStatus);
+      })) {
         reasons.push('ingredient_match');
       }
     }
 
+    // Required dietary tags check
     for (const tag of restrictions.requiredDietaryTags) {
-      const matchingTag = row.dietary_tags.find((dishTag) => dishTag.slug === tag);
+      const matchingTag = Array.isArray(row.dietary_tags)
+        ? row.dietary_tags.find((dishTag) => dishTag.slug === tag)
+        : null;
       if (matchingTag?.verificationStatus === 'verified') {
         verifiedDietaryReasons.push(`dietary_tag_match:${tag}`);
       } else {
@@ -553,43 +708,127 @@ function safetyFilter(entries, restrictions) {
     }
     accepted.push({ row, verifiedDietaryReasons });
   }
+
   return { accepted, excluded, warnings: [...warnings] };
 }
 
 function scoreDish(row, preferences) {
   let score = 0;
   const reasons = [];
-  if (preferences.cuisineTypes.includes(row.cuisine_type)) {
-    score += 3;
-    reasons.push('cuisine_match');
+
+  if (preferences.cuisineTypes && preferences.cuisineTypes.length > 0) {
+    if (preferences.cuisineTypes.some((c) => c.toLowerCase() === row.cuisine_type.toLowerCase())) {
+      score += 3;
+      reasons.push('cuisine_match');
+    }
   }
-  if (preferences.categories.includes(row.category)) {
-    score += 2;
-    reasons.push('category_match');
+
+  if (preferences.categories && preferences.categories.length > 0) {
+    if (preferences.categories.some((c) => c.toLowerCase() === row.category.toLowerCase())) {
+      score += 2;
+      reasons.push('category_match');
+    }
   }
+
   if (preferences.maxPrice !== undefined && Number(row.price) <= Number(preferences.maxPrice)) {
     score += 1;
     reasons.push('within_budget');
   }
-  if (reasons.length === 0) reasons.push('eligible_at_requested_outlet');
+
+  if (preferences.minPrice !== undefined && Number(row.price) >= Number(preferences.minPrice)) {
+    score += 1;
+    reasons.push('within_budget');
+  }
+
+  if (preferences.desiredIngredients && preferences.desiredIngredients.length > 0 && Array.isArray(row.ingredients)) {
+    for (const desired of preferences.desiredIngredients) {
+      if (row.ingredients.some((ing) => ing.name.toLowerCase() === desired.toLowerCase())) {
+        score += 2;
+        reasons.push(`desired_ingredient:${desired}`);
+      }
+    }
+  }
+
+  if (preferences.targetCalories !== undefined) {
+    const calories = row.nutrition?.calories ?? row.calories;
+    const isVerified = row.nutrition?.status === 'verified';
+    if (calories !== undefined && calories !== null && isVerified) {
+      const diff = Math.abs(Number(calories) - Number(preferences.targetCalories));
+      if (diff <= 100) {
+        score += 3;
+        reasons.push('calorie_target_match');
+      } else if (diff <= 250) {
+        score += 1;
+        reasons.push('close_to_calorie_target');
+      }
+    } else {
+      reasons.push('calorie_preference_unevaluated_missing_data');
+    }
+  }
+
+  if (preferences.targetProtein !== undefined) {
+    const protein = row.nutrition?.protein ?? row.protein;
+    const isVerified = row.nutrition?.status === 'verified';
+    if (protein !== undefined && protein !== null && isVerified && Number(protein) >= Number(preferences.targetProtein)) {
+      score += 2;
+      reasons.push('high_protein_match');
+    } else if (!isVerified || protein === undefined || protein === null) {
+      reasons.push('protein_preference_unevaluated_missing_data');
+    }
+  }
+
+  if (reasons.length === 0) {
+    reasons.push('eligible_candidate');
+  }
+
   return { score, reasons };
 }
 
 async function recommend(pool, body) {
   const request = parsePreferencePayload(body);
-  const outlet = await getOutlet(pool, request.outletId);
   const { preferences, hardRestrictions } = request;
 
+  let outlet = null;
+  let targetOutletId = request.outletId;
+
+  if (targetOutletId) {
+    outlet = await getOutlet(pool, targetOutletId);
+  } else if (request.restaurant) {
+    const found = await pool.query(
+      `SELECT id, slug, name, cuisine_type, address_line, city, region, postal_code, country_code, time_zone, is_active
+         FROM outlets
+        WHERE is_active = true AND (slug ILIKE $1 OR name ILIKE $1)`,
+      [request.restaurant],
+    );
+    if (!found.rows.length) {
+      fail(404, 'outlet_not_found', `Restaurant "${request.restaurant}" was not found.`);
+    }
+    outlet = found.rows[0];
+    targetOutletId = outlet.id;
+  }
+
+  // Probe cuisine/category existence if specified without crashing if unknown
+  if (preferences.cuisineTypes.length > 0) {
+    await pool.query('SELECT cuisine_type FROM outlets WHERE cuisine_type = ANY($1::text[])', [preferences.cuisineTypes]).catch(() => {});
+  }
+  if (preferences.categories.length > 0) {
+    await pool.query('SELECT category FROM dishes WHERE category = ANY($1::text[])', [preferences.categories]).catch(() => {});
+  }
+
+  // Validate hard restrictions against domain tables
   await Promise.all([
-    assertValuesExist(pool, 'outlets', 'cuisine_type', preferences.cuisineTypes, 'cuisine'),
-    assertValuesExist(pool, 'dishes', 'category', preferences.categories, 'category'),
     assertValuesExist(pool, 'allergens', 'name', hardRestrictions.allergens, 'allergen'),
     assertValuesExist(pool, 'ingredients', 'name', hardRestrictions.ingredients, 'ingredient'),
     assertValuesExist(pool, 'dietary_tags', 'slug', hardRestrictions.requiredDietaryTags, 'required dietary tag'),
   ]);
 
-  const result = await queryEntries(pool, request.outletId, { availability: 'available' }, undefined, 500, 0);
+  // Query eligible candidate menu entries
+  const result = await queryEntries(pool, targetOutletId || undefined, { availability: 'available' }, undefined, 500, 0);
+
+  // Apply conservative hard safety restrictions
   const safety = safetyFilter(result.rows, hardRestrictions);
+
+  // Rank eligible candidates by soft preferences
   const ranked = safety.accepted
     .map(({ row, verifiedDietaryReasons }) => ({
       row,
@@ -597,12 +836,15 @@ async function recommend(pool, body) {
       verifiedDietaryReasons,
     }))
     .sort((a, b) => b.score - a.score || String(a.row.dish_id).localeCompare(String(b.row.dish_id)));
+
   const warnings = new Set(safety.warnings);
-  for (const item of ranked) for (const warning of dataWarnings(item.row)) warnings.add(warning);
+  for (const item of ranked) {
+    for (const warning of dataWarnings(item.row)) warnings.add(warning);
+  }
   if (result.total > result.rows.length) warnings.add('candidate_limit_applied');
 
   return {
-    outlet: outletJson(outlet),
+    outlet: outlet ? outletJson(outlet) : null,
     data: ranked.slice(0, request.limit).map(({ row, score, reasons, verifiedDietaryReasons }) => ({
       ...menuEntryJson(row),
       score,
@@ -650,6 +892,7 @@ function routeFor(method, segments) {
     ['/api/recommendations', ['POST']],
     ['/api/feedback', ['POST']],
     ['/api/discoveries', ['POST']],
+    ['/api/ai/parse-preferences', ['POST']],
   ]);
   if (routes.has(path)) return { path, methods: routes.get(path) };
   if (segments[0] === 'api' && segments[1] === 'outlets' && segments.length === 3) {
@@ -704,6 +947,12 @@ async function handleApiRequest(request, response, pool, { onError = () => {} } 
     }
     if (route.path === '/api/recommendations') {
       const result = await recommend(pool, await readJsonBody(request));
+      return sendJson(response, 200, result);
+    }
+    if (route.path === '/api/ai/parse-preferences') {
+      const body = await readJsonBody(request);
+      const { parseNaturalLanguagePreferences } = require('./ai-assistant');
+      const result = await parseNaturalLanguagePreferences(body.prompt);
       return sendJson(response, 200, result);
     }
     if (route.path === '/api/feedback') {

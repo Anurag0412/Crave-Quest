@@ -6,7 +6,19 @@ const { createHealthServer } = require('./health-server');
 const { createShutdown } = require('./shutdown');
 
 async function startServer() {
-  const config = loadConfig();
+  let config;
+  try {
+    config = loadConfig();
+  } catch (error) {
+    if (!process.env.DATABASE_URL) {
+      config = {
+        databaseUrl: null,
+        port: Number(process.env.PORT || 3000),
+      };
+    } else {
+      throw error;
+    }
+  }
   const pool = createPool(config.databaseUrl, {
     onIdleClientError: () => console.error('Unexpected idle database connection error.'),
   });

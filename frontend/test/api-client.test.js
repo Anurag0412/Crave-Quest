@@ -55,3 +55,26 @@ test('malformed success responses are rejected', async () => {
     await assert.rejects(api.listOutlets(), { name: 'ApiClientError', status: 200 });
   });
 });
+
+test('parsePreferences sends prompt to AI preference endpoint', async () => {
+  const prompt = 'I want spicy noodles with no peanuts under 25';
+  await withFetch(async (url, options) => {
+    assert.equal(url, '/api/ai/parse-preferences');
+    assert.equal(options.method, 'POST');
+    assert.equal(options.headers['content-type'], 'application/json');
+    assert.deepEqual(JSON.parse(options.body), { prompt });
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        success: true,
+        source: 'deterministic_fallback',
+        data: { cuisine: null, hardRestrictions: { allergens: ['peanuts'] } },
+      }),
+    };
+  }, async (api) => {
+    const res = await api.parsePreferences(prompt);
+    assert.equal(res.success, true);
+    assert.deepEqual(res.data.hardRestrictions.allergens, ['peanuts']);
+  });
+});

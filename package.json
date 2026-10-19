@@ -1,0 +1,20 @@
+{
+  "name": "cravequest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CraveQuest food discovery interface and API service",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Build OK')\"",
+    "test": "node --test backend/test/api.test.js backend/test/config.test.js backend/test/health-server.test.js backend/test/migrate.test.js backend/test/master-scenarios.test.js frontend/test/api-client.test.js frontend/test/dev-server.test.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.30.0",
+    "pg": "^8.16.3"
+  }
+}
