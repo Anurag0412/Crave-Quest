@@ -8,9 +8,9 @@
     "node": ">=20.6"
   },
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node --env-file=.env src/server.js",
     "start:local": "node --env-file=../.env src/server.js",
-    "db:migrate": "node src/migrate.js",
+    "db:migrate": "node --env-file=.env src/migrate.js",
     "db:migrate:local": "node --env-file=../.env src/migrate.js",
     "test": "node --test"
   },
