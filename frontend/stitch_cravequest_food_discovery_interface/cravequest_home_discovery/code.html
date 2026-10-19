@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>CraveQuest — Food Explorer Field Log</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.grid-paper-bg{background-color:#FDFBF7;background-image:linear-gradient(to right,#E2EAD8 1px,transparent 1px),linear-gradient(to bottom,#E2EAD8 1px,transparent 1px);background-size:24px 24px;}.stamp-shadow-sm{box-shadow:2px 2px 0px #1B4332;}.stamp-shadow{box-shadow:3px 3px 0px #1B4332;}.stamp-shadow-md{box-shadow:4px 4px 0px #1B4332;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#e5e9e3", "secondary": "#006c48", "primary-container": "#1b4332", "primary-fixed": "#c1ecd4", "surface-container-highest": "#dfe4dd", "surface-container-lowest": "#ffffff", "surface-dim": "#d7dbd5", "inverse-primary": "#a5d0b9", "tertiary-fixed-dim": "#e7c268", "on-secondary": "#ffffff", "on-tertiary-fixed": "#251a00", "on-tertiary-container": "#c4a24c", "tertiary": "#322400", "surface-container": "#ebefe8", "outline-variant": "#c1c8c2", "outline": "#717973", "inverse-on-surface": "#edf2eb", "on-secondary-fixed-variant": "#005235", "secondary-container": "#92f7c3", "on-secondary-container": "#00734d", "surface-bright": "#f6fbf4", "primary-fixed-dim": "#a5d0b9", "surface-variant": "#dfe4dd", "error": "#ba1a1a", "on-primary-fixed-variant": "#274e3d", "on-primary-fixed": "#002114", "primary": "#012d1d", "error-container": "#ffdad6", "secondary-fixed": "#92f7c3", "on-secondary-fixed": "#002113", "on-background": "#181d19", "inverse-surface": "#2d322d", "surface-tint": "#3f6653", "on-surface": "#181d19", "on-tertiary-fixed-variant": "#5a4400", "on-error": "#ffffff", "on-primary-container": "#86af99", "secondary-fixed-dim": "#75daa8", "tertiary-container": "#4c3900", "tertiary-fixed": "#ffdf96", "background": "#f6fbf4", "surface-container-low": "#f0f5ee", "on-error-container": "#93000a", "on-primary": "#ffffff", "on-surface-variant": "#414844", "on-tertiary": "#ffffff", "surface": "#f6fbf4" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "gutter-desktop": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "gutter-mobile": "0.75rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1.25rem", "margin-desktop": "3rem", "space-xl": "2.5rem", "margin": "1.5rem" }, "fontFamily": { "headline-lg-mobile": ["Bricolage Grotesque"], "headline-lg": ["Bricolage Grotesque"], "display-lg": ["Bricolage Grotesque"], "headline-sm": ["Bricolage Grotesque"], "label-lg": ["Space Grotesk"], "body-md": ["Plus Jakarta Sans"], "label-md": ["Space Grotesk"], "body-lg": ["Plus Jakarta Sans"], "display-lg-mobile": ["Bricolage Grotesque"], "body-sm": ["Plus Jakarta Sans"], "headline-md": ["Bricolage Grotesque"], "label-sm": ["Space Grotesk"] }, "fontSize": { "headline-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "headline-sm": ["20px", { "lineHeight": "26px", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "display-lg-mobile": ["38px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-md": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }] } } } };</script></head><body data-cq-screen="home" class="grid-paper-bg font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 bg-[#FDFBF7]/95 backdrop-blur-md border-b-[2.5px] border-primary"><div class="h-20 max-w-[1280px] mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg flex-shrink-0"><a class="flex items-center gap-space-sm group" href="#"><img alt="CraveQuest Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VDRKH7tYEsnAJtLicgABmyJU9zFUP9TxTW_Fd0C3cGmFyzVm5HPnSwNImb3nHHZchUt6f2idfy09VzrDfc7FjJwCZQvO_I4B7M13pZd5hEkOKn4pa2Ao3bf7NRGkzqnwULxe-8ihS94w3GD-yuUffK5gQ1zaKV5A19NRnMsL4tPR44XSq8B8ayh8np__cvG3rEsX3ntg9aYvACnvNh7tmia73rzVCTkFOGenticdKfUcq8iqfHroKyhXs"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none group-hover:text-secondary transition-colors">CRAVEQUEST</span><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase leading-none mt-1">Field Journal</span></div></a><div class="hidden xl:flex items-center relative w-72 lg:w-80"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 bg-surface-container-lowest border-[2px] border-primary rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-0 stamp-shadow-sm" placeholder="What flavor are you hunting today?" type="text"/></div></div><nav class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-xs py-space-xs rounded-full border-[2px] border-primary stamp-shadow-sm" data-active-classes="bg-primary-container text-on-primary-container stamp-shadow-sm border-[2px] border-primary font-bold"><a aria-current="page" class="px-space-md py-1.5 rounded-full transition-all bg-primary-container text-on-primary-container stamp-shadow-sm border-[2px] border-primary font-bold" data-path="discover" href="#">Discover</a><a class="px-space-md py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" data-path="flavor-quiz" href="#">Flavor Quiz</a><a class="px-space-md py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" data-path="feed-matches" href="#">Feed &amp; Matches</a><a class="px-space-md py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" data-path="badge-quest" href="#">Badge Quest</a></nav><div class="flex items-center gap-space-sm flex-shrink-0"><div class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full border-[2px] border-primary stamp-shadow-sm font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px] text-tertiary-container">stars</span><span>Lvl 4 Scout (12/20)</span></div><button class="hidden md:flex items-center gap-1 px-3 py-1 bg-surface-container-lowest text-on-surface rounded-full border-[2px] border-primary stamp-shadow-sm font-label-sm text-label-sm hover:bg-surface-container-high hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-[16px] text-secondary">location_on</span><span>SF, CA</span><span class="material-symbols-outlined text-[14px]">expand_more</span></button><div class="flex items-center gap-space-xs pl-1 border-l-2 border-primary/20"><div class="relative flex items-center gap-2 cursor-pointer"><div class="relative"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border-[2px] border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFa4cY_JZ5btWVg7mVTN2u7t7UkyUQA1zjD8-b6is0sduhpXcQifqlYa0UoEuHFa5vsrNRG25NVY1xvUCJCWErMlcCLi4CwzLLsgv4e95M8DDB3gIbJVHxL7xs7j2F_EaFCSz-GU6GF9RGeZ39DomeKXXG4jPhSfTRh0rtYuKa-fNwZUIKIen4zq3U-VPKpIuT7QGSfA_HbzET06bEA8kyyHqkzypYGR-ikGzxFXGq5mPHiaD898ZQzA"/><span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-secondary rounded-full border border-surface-container-lowest"></span></div><span class="hidden sm:inline font-label-md text-label-md text-primary font-bold">Sam P.</span></div></div></div></div></header><main class="w-full pt-20 flex-1 max-w-[1280px] mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop"><div class="flex flex-col w-full pb-space-xl">
+<!-- SECTION 1: HERO DISCOVERY BANNER & TASTE COMPASS -->
+<section class="relative w-full pt-6 md:pt-10 pb-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg lg:gap-gutter-desktop items-center">
+<!-- Left Column: Copy & CTAs -->
+<div class="lg:col-span-7 flex flex-col items-start gap-space-md z-10">
+<!-- Edition Tag -->
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full stamp-shadow-sm font-label-sm text-label-sm uppercase tracking-wider -rotate-1">
+<span class="material-symbols-outlined text-[15px] text-tertiary-container" style="font-variation-settings: 'FILL' 1;">explore</span>
+            Issue No. 42 • Daily Dispatch
+          </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container-lowest text-secondary rounded-full stamp-shadow-sm font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Live Food Compass Active
+          </span>
+</div>
+<!-- Headline -->
+<div class="flex flex-col gap-1">
+<p class="font-label-md text-label-md uppercase tracking-widest text-secondary font-bold">Field Guide to Uncharted Cravings</p>
+<h1 class="font-display-lg text-display-lg text-primary tracking-tight leading-tight">
+            Track Down Dishes You Didn’t Know You Needed.
+          </h1>
+</div>
+<!-- Subhead -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+          Our AI food compass decodes your spice tolerance, textural obsession, and current mood into pinpoint neighborhood matches. No generic reviews. Just unadulterated flavor science.
+        </p>
+<!-- Chunky Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-md pt-2">
+<button class="group relative inline-flex items-center gap-2.5 px-6 py-3.5 bg-primary-container text-surface-bright rounded-xl font-label-lg text-label-lg stamp-shadow transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_#012d1d] active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_#012d1d]" id="cta-quiz" type="button">
+<span class="material-symbols-outlined text-[20px] text-tertiary-fixed-dim group-hover:rotate-12 transition-transform">auto_awesome</span>
+<span>Take the Flavor Quiz ✨</span>
+</button>
+<button class="group inline-flex items-center gap-2 px-5 py-3.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-xl font-label-lg text-label-lg stamp-shadow transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-surface-container-lowest hover:shadow-[5px_5px_0px_#012d1d] active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_#012d1d]" id="cta-matches" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">ramen_dining</span>
+<span>Explore Today's Top 20 🍜</span>
+</button>
+</div>
+<!-- Trust Mini Badges -->
+<div class="flex items-center gap-4 pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[16px]">check_circle</span>
+            Curated by 1,420+ Verified Scouts
+          </span>
+<span class="text-outline-variant font-black">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[16px]">bolt</span>
+            Refreshes at Sunrise
+          </span>
+</div>
+</div>
+<!-- Right Column: Interactive Taste Compass Radar -->
+<div class="lg:col-span-5 relative flex justify-center items-center">
+<!-- Background Stack Card Backing -->
+<div class="absolute -inset-2 bg-secondary-fixed/50 rounded-3xl stamp-shadow rotate-1 pointer-events-none"></div>
+<!-- Main Radar Card -->
+<div class="relative w-full bg-surface-container-lowest rounded-2xl p-5 md:p-6 stamp-shadow-md flex flex-col gap-4">
+<!-- Card Header / Dial Info -->
+<div class="flex items-center justify-between pb-3 bg-surface-container-low px-3 py-2 rounded-xl">
+<div class="flex items-center gap-2">
+<span class="p-1.5 bg-primary-container text-surface-bright rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">explore</span>
+</span>
+<div>
+<p class="font-label-md text-label-md text-primary font-bold leading-none">TASTE COMPASS v4.2</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-1">Live Calibrated to Bay Area Micro-spots</p>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-secondary text-on-secondary rounded-full font-label-sm text-label-sm font-bold">99.4% Sync</span>
+</div>
+<!-- Radar Visual Box with SVG Graphic and Floating Food Stickers -->
+<div class="relative w-full aspect-square max-h-[320px] mx-auto flex items-center justify-center bg-surface-bright rounded-xl overflow-hidden">
+<!-- Radar SVG (pentagon coordinates) -->
+<svg class="w-full h-full p-6" fill="none" viewbox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+<!-- Concentric Rings -->
+<polygon class="text-outline-variant" points="150,30 264,113 220,247 80,247 36,113" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1.5"></polygon>
+<polygon class="text-outline-variant" points="150,70 226,125 197,215 103,215 74,125" stroke="currentColor" stroke-dasharray="3 3" stroke-width="1.2"></polygon>
+<polygon class="text-outline-variant" points="150,110 188,138 173,182 127,182 112,138" stroke="currentColor" stroke-width="1"></polygon>
+<!-- Axis Lines -->
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="150" x2="150" y1="150" y2="30"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="150" x2="264" y1="150" y2="113"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="150" x2="220" y1="150" y2="247"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="150" x2="80" y1="150" y2="247"></line>
+<line class="text-outline-variant" stroke="currentColor" stroke-width="1.5" x1="150" x2="36" y1="150" y2="113"></line>
+<!-- Filled Active Flavor Polygon -->
+<polygon class="fill-secondary/25 stroke-secondary transition-all duration-500" id="radar-shape" points="150,45 250,120 205,235 90,210 50,125" stroke-width="3"></polygon>
+<!-- Anchor Dots -->
+<circle class="fill-primary" cx="150" cy="45" r="4.5"></circle>
+<circle class="fill-primary" cx="250" cy="120" r="4.5"></circle>
+<circle class="fill-primary" cx="205" cy="235" r="4.5"></circle>
+<circle class="fill-primary" cx="90" cy="210" r="4.5"></circle>
+<circle class="fill-primary" cx="50" cy="125" r="4.5"></circle>
+<circle class="fill-primary-container" cx="150" cy="150" r="3"></circle>
+</svg>
+<!-- Axis Labels -->
+<span class="absolute top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-surface-container-highest rounded-md font-label-sm text-label-sm text-primary font-bold stamp-shadow-sm">🌶️ SPICY (92%)</span>
+<span class="absolute top-[34%] right-1.5 px-2 py-0.5 bg-surface-container-highest rounded-md font-label-sm text-label-sm text-primary font-bold stamp-shadow-sm">🥖 CRISPY (84%)</span>
+<span class="absolute bottom-2 right-8 px-2 py-0.5 bg-surface-container-highest rounded-md font-label-sm text-label-sm text-primary font-bold stamp-shadow-sm">🥩 UMAMI (96%)</span>
+<span class="absolute bottom-2 left-8 px-2 py-0.5 bg-surface-container-highest rounded-md font-label-sm text-label-sm text-primary font-bold stamp-shadow-sm">🍋 ACID (72%)</span>
+<span class="absolute top-[34%] left-1 px-2 py-0.5 bg-surface-container-highest rounded-md font-label-sm text-label-sm text-primary font-bold stamp-shadow-sm">🍯 SWEET (48%)</span>
+<!-- Playful Washi / Food Stickers -->
+<!-- Sticker 1: Ramen Pin -->
+<div class="absolute top-6 right-6 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-lg stamp-shadow-sm rotate-6 flex items-center gap-1 text-[11px] font-label-sm font-bold">
+<span>🍜 Miso Paitan</span>
+<span class="text-secondary">$17</span>
+</div>
+<!-- Sticker 2: Sourdough Crumb -->
+<div class="absolute bottom-8 left-2 bg-secondary-fixed text-on-secondary-fixed px-2.5 py-1 rounded-lg stamp-shadow-sm -rotate-6 flex items-center gap-1 text-[11px] font-label-sm font-bold">
+<span>🥖 Tartine Sourdough</span>
+<span class="text-primary-container">#1 Pick</span>
+</div>
+<!-- Center Compass Stamped Badge -->
+<div class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-surface-container-lowest stamp-shadow flex items-center justify-center pointer-events-none">
+<span class="material-symbols-outlined text-secondary text-[26px]">pixel_4_4xl_4a_5_5a_5g</span>
+</div>
+</div>
+<!-- Compass Bottom Interactive Switchers -->
+<div class="grid grid-cols-3 gap-2 pt-1 text-center">
+<button class="taste-preset px-2 py-1.5 bg-surface-container text-primary font-label-sm text-label-sm rounded-lg hover:bg-secondary-fixed transition-colors active:scale-95 font-semibold" data-mode="umami" type="button">
+              🥩 Umami Bomb
+            </button>
+<button class="taste-preset px-2 py-1.5 bg-surface-container text-primary font-label-sm text-label-sm rounded-lg hover:bg-secondary-fixed transition-colors active:scale-95 font-semibold" data-mode="spice" type="button">
+              🔥 Fire Seeker
+            </button>
+<button class="taste-preset px-2 py-1.5 bg-secondary-fixed text-on-secondary-fixed stamp-shadow-sm font-label-sm text-label-sm rounded-lg active:scale-95 font-bold" data-mode="crispy" type="button">
+              ✨ Max Crunch
+            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: ACTIVE QUESTS & SCOUT PROGRESS (Ledger Strip) -->
+<section class="w-full my-6 bg-surface-container-lowest rounded-2xl stamp-shadow-md p-space-md md:p-space-lg">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Quest Info & Step Progress -->
+<div class="flex-1 flex flex-col md:flex-row items-start md:items-center gap-4">
+<!-- Badge Token Stamp -->
+<div class="w-14 h-14 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed stamp-shadow flex items-center justify-center flex-shrink-0 -rotate-3">
+<span class="material-symbols-outlined text-[32px] text-tertiary-container">bakery_dining</span>
+</div>
+<!-- Quest Description -->
+<div class="flex-1">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm uppercase rounded-md font-bold">
+              Active Quest #07
+            </span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Step 3 of 5 Complete</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary mt-0.5">
+            The Sourdough &amp; Blistered Crust Hunter
+          </h2>
+<!-- Progress Track -->
+<div class="w-full max-w-md bg-surface-container-high h-3 rounded-full overflow-hidden mt-2 stamp-shadow-sm">
+<div class="bg-secondary h-full rounded-full transition-all duration-700" style="width: 60%;"></div>
+</div>
+</div>
+</div>
+<!-- Quick Scout Stats Bar -->
+<div class="flex items-center gap-3 flex-wrap lg:border-l-2 lg:border-primary/10 lg:pl-6">
+<div class="px-3.5 py-2 bg-surface-container-low rounded-xl stamp-shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">pin_drop</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-primary font-bold leading-none">38</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-0.5">Gems Uncovered</span>
+</div>
+</div>
+<div class="px-3.5 py-2 bg-surface-container-low rounded-xl stamp-shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container text-[20px]">military_tech</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-primary font-bold leading-none">12</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant leading-none mt-0.5">Badges In Log</span>
+</div>
+</div>
+<div class="px-3.5 py-2 bg-secondary-fixed text-on-secondary-fixed rounded-xl stamp-shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">target</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-primary font-bold leading-none">98.2%</span>
+<span class="font-label-sm text-label-sm text-primary leading-none mt-0.5">Match Accuracy</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: CRAVE ROULETTE / QUICK FILTER TOGGLE STRIP -->
+<section class="w-full my-6 flex flex-col gap-space-sm">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<span class="p-1 bg-primary text-surface-bright rounded-md stamp-shadow-sm">
+<span class="material-symbols-outlined text-[16px]">casino</span>
+</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Crave Roulette Filter</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">/ INSTANT SENSORY PIVOT</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 bg-surface-container-lowest rounded-full stamp-shadow-sm font-label-sm text-label-sm text-secondary font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span id="live-scout-count">14 scouts eating within 1.2 miles</span>
+</div>
+</div>
+<!-- Scrollable/Wrap Filter Pills -->
+<div class="flex items-center gap-2.5 flex-wrap pt-1">
+<button class="filter-pill px-4 py-2 bg-secondary-fixed text-on-secondary-fixed rounded-full stamp-shadow font-label-md text-label-md font-bold flex items-center gap-1.5 transition-all hover:-translate-y-0.5 active:translate-y-0.5" data-filter="heat" type="button">
+<span>🔥</span> Need Serious Heat
+      </button>
+<button class="filter-pill px-4 py-2 bg-surface-container-lowest text-primary rounded-full stamp-shadow font-label-md text-label-md font-bold flex items-center gap-1.5 transition-all hover:bg-surface-container-high hover:-translate-y-0.5 active:translate-y-0.5" data-filter="dumplings" type="button">
+<span>🥟</span> Pillowy Dumplings
+      </button>
+<button class="filter-pill px-4 py-2 bg-surface-container-lowest text-primary rounded-full stamp-shadow font-label-md text-label-md font-bold flex items-center gap-1.5 transition-all hover:bg-surface-container-high hover:-translate-y-0.5 active:translate-y-0.5" data-filter="crunch" type="button">
+<span>🥗</span> Vibrant Crunch
+      </button>
+<button class="filter-pill px-4 py-2 bg-surface-container-lowest text-primary rounded-full stamp-shadow font-label-md text-label-md font-bold flex items-center gap-1.5 transition-all hover:bg-surface-container-high hover:-translate-y-0.5 active:translate-y-0.5" data-filter="cheese" type="button">
+<span>🧀</span> Melty Comfort
+      </button>
+<button class="filter-pill px-4 py-2 bg-surface-container-lowest text-primary rounded-full stamp-shadow font-label-md text-label-md font-bold flex items-center gap-1.5 transition-all hover:bg-surface-container-high hover:-translate-y-0.5 active:translate-y-0.5" data-filter="budget" type="button">
+<span>💵</span> Late Night (&lt;$15)
+      </button>
+<button class="filter-pill px-4 py-2 bg-surface-container-lowest text-primary rounded-full stamp-shadow font-label-md text-label-md font-bold flex items-center gap-1.5 transition-all hover:bg-surface-container-high hover:-translate-y-0.5 active:translate-y-0.5" data-filter="patio" type="button">
+<span>🌿</span> Hidden Back Patio
+      </button>
+</div>
+</section>
+<!-- SECTION 4: CURATED FIELD DROPS (TOP MATCH CARDS) -->
+<section class="w-full my-6 flex flex-col gap-space-md">
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Dispatched At 11:30 AM</p>
+<h3 class="font-headline-lg text-headline-lg text-primary">Today’s Pinpoint Drops</h3>
+</div>
+<a class="hidden sm:inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:text-secondary font-bold group" href="#">
+<span>View Full 20 Dishes Log</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<!-- 3-Column Dish Bento Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-desktop">
+<!-- Card 1 -->
+<article class="group bg-surface-container-lowest rounded-2xl p-4 stamp-shadow-md flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#012d1d]">
+<div class="flex flex-col gap-3">
+<!-- Image Container with Price Stamp & Heart Button -->
+<div class="relative w-full aspect-[16/10] rounded-xl overflow-hidden stamp-shadow-sm bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" data-alt="A steaming bowl of hand-pulled Biang Biang spicy noodles topped with charred scallions, chili flakes, vibrant red chili oil, fragrant minced garlic, and fresh bok choy, captured in moody warm ambient daylight on a rustic wooden table with dark green ceramic chopsticks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAm1-i0K5YryNYUjcv75LwXCz4XnfSF_-7p9zAX0Yj4exjwAyQNSYF6hGKp2wjtROB9ShZhH4wPdm4DqJxr0d7ZaLPRdohzxw0xUUS4UIT4fhvLv6IxKtsPCCb3yeQbuwKsasg7CzDvjOZgSIqa-Yx7H0HVQc0g9v0Sml-_eUjA11TFixZwQqzkHNQhX5IbwEXyJm_uhOv2yyMPDr0YR3dGAVsY_xYIGmNuP6_sRKMFcKNngiJ5O1rAsQ"/>
+<!-- Price Pin Badge -->
+<div class="absolute top-3 left-3 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-lg stamp-shadow font-label-md text-label-md font-extrabold -rotate-3">
+              $14.50
+            </div>
+<!-- Save Heart Button -->
+<button aria-label="Save dish" class="save-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest text-primary stamp-shadow-sm flex items-center justify-center transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[20px] transition-colors">favorite</span>
+</button>
+<!-- Match Score Badge -->
+<div class="absolute bottom-2 left-2 bg-primary-container text-surface-bright px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">bolt</span>
+              99% Flavor Sync
+            </div>
+</div>
+<!-- Dish Info -->
+<div class="flex flex-col">
+<div class="flex items-center justify-between gap-2">
+<span class="font-label-sm text-label-sm text-secondary font-bold">Noodle Craft Lab • Inner Sunset</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">0.6 mi</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mt-0.5 group-hover:text-secondary transition-colors">
+              Sizzling Chili Scallion Biang Biang
+            </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">
+              Matched for your high capsaicin affinity, chew density preference, and garlic crunch bias.
+            </p>
+</div>
+</div>
+<!-- Card Footer Tags & Action -->
+<div class="mt-4 pt-3 bg-surface-container-low -mx-4 -mb-4 p-4 rounded-b-2xl flex items-center justify-between">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed text-[11px] font-label-sm rounded-full font-bold">Hand-Pulled</span>
+<span class="px-2 py-0.5 bg-surface-container-highest text-primary text-[11px] font-label-sm rounded-full">House Vinegar</span>
+</div>
+<button class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary font-bold hover:text-secondary" type="button">
+<span>Log Dish</span>
+<span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+</button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="group bg-surface-container-lowest rounded-2xl p-4 stamp-shadow-md flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#012d1d]">
+<div class="flex flex-col gap-3">
+<!-- Image Container with Price Stamp & Heart Button -->
+<div class="relative w-full aspect-[16/10] rounded-xl overflow-hidden stamp-shadow-sm bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" data-alt="Golden crisp wood-fired sourdough Margherita pizza with blistered charred leopard spots on the airy crust, bubbling fresh buffalo mozzarella, vibrant San Marzano tomato sauce, fresh basil leaves and a drizzle of emerald olive oil." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5PNlqQ4zjYjccgwQBLLq2XTAST-LVucNuA8_lLt5j9y2Ln8ZhxiO5vwvkfVzG_M0tjoV6VpTXVyGlKHDOIeuVZypgdo8pfbV6rq4ngCyqW9_8aYGE6nspY1ev3eWIdceKQSEkUg5NyYNnu5MvehuhsvE_o3mtjgoI_vbzlVdReNS8oxGt4_pTbum3Jia_t-WNb2DeL78_ZKy9-t1GbPnfDsZ37ylGpKmb68i9KvaULyuqIVueR4c2sg"/>
+<!-- Price Pin Badge -->
+<div class="absolute top-3 left-3 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-lg stamp-shadow font-label-md text-label-md font-extrabold rotate-2">
+              $18.00
+            </div>
+<!-- Save Heart Button -->
+<button aria-label="Save dish" class="save-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest text-primary stamp-shadow-sm flex items-center justify-center transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[20px] transition-colors">favorite</span>
+</button>
+<!-- Match Score Badge -->
+<div class="absolute bottom-2 left-2 bg-primary-container text-surface-bright px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">bolt</span>
+              97% Flavor Sync
+            </div>
+</div>
+<!-- Dish Info -->
+<div class="flex flex-col">
+<div class="flex items-center justify-between gap-2">
+<span class="font-label-sm text-label-sm text-secondary font-bold">Ferment &amp; Flame • Mission Dist.</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">1.1 mi</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mt-0.5 group-hover:text-secondary transition-colors">
+              72-Hour Blistered Sourdough Pie
+            </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">
+              Fulfills your active 'Crust Hunter' quest; wild yeast tangy crumb with fresh Fior di Latte.
+            </p>
+</div>
+</div>
+<!-- Card Footer Tags & Action -->
+<div class="mt-4 pt-3 bg-surface-container-low -mx-4 -mb-4 p-4 rounded-b-2xl flex items-center justify-between">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-label-sm rounded-full font-bold">Quest Match</span>
+<span class="px-2 py-0.5 bg-surface-container-highest text-primary text-[11px] font-label-sm rounded-full">Wood-Fired</span>
+</div>
+<button class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary font-bold hover:text-secondary" type="button">
+<span>Log Dish</span>
+<span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+</button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="group bg-surface-container-lowest rounded-2xl p-4 stamp-shadow-md flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#012d1d]">
+<div class="flex flex-col gap-3">
+<!-- Image Container with Price Stamp & Heart Button -->
+<div class="relative w-full aspect-[16/10] rounded-xl overflow-hidden stamp-shadow-sm bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" data-alt="Plate of Japanese crispy fried pork katsu sando with thick fluffy shokupan white bread, panko-crusted juicy cutlet, finely shredded cabbage, and glossy dark tonkatsu sauce, served on patterned ceramic dish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGGdTFR9-c1V6IxdGVMHbiCDfNnKAWVyWYaCHeuwVeSvCmsZDvbZsiPm9amfq0dsKRdlsEgWQ2sgHEx2p04HTfXUVeTzc8SHRLy8ctbjfyTSkYJ3_2M0aUInsTlODXbXhOw-aggbOWSB7SK4Dmes5DfQ23D1VoZI4zBD89bBcss7EI2Pfb4GfICYjnSVFaWSNJWXPZdI0nit7uDpB3zeJC-zyS82kZFpB-dDF7EQLwOTI2G92XSMRrYg"/>
+<!-- Price Pin Badge -->
+<div class="absolute top-3 left-3 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-lg stamp-shadow font-label-md text-label-md font-extrabold -rotate-1">
+              $12.00
+            </div>
+<!-- Save Heart Button -->
+<button aria-label="Save dish" class="save-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest text-primary stamp-shadow-sm flex items-center justify-center transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[20px] transition-colors">favorite</span>
+</button>
+<!-- Match Score Badge -->
+<div class="absolute bottom-2 left-2 bg-primary-container text-surface-bright px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">bolt</span>
+              94% Flavor Sync
+            </div>
+</div>
+<!-- Dish Info -->
+<div class="flex flex-col">
+<div class="flex items-center justify-between gap-2">
+<span class="font-label-sm text-label-sm text-secondary font-bold">Katsu Kissa • Japantown</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">0.4 mi</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mt-0.5 group-hover:text-secondary transition-colors">
+              Panko Kurobuta Milk Bread Sando
+            </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">
+              Satisfies crispy crunch profile with tangy caramelized cabbage slaw &amp; hot Japanese mustard.
+            </p>
+</div>
+</div>
+<!-- Card Footer Tags & Action -->
+<div class="mt-4 pt-3 bg-surface-container-low -mx-4 -mb-4 p-4 rounded-b-2xl flex items-center justify-between">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed text-[11px] font-label-sm rounded-full font-bold">Under $15</span>
+<span class="px-2 py-0.5 bg-surface-container-highest text-primary text-[11px] font-label-sm rounded-full">Grab &amp; Go</span>
+</div>
+<button class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary font-bold hover:text-secondary" type="button">
+<span>Log Dish</span>
+<span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- SECTION 5: FIELD NOTES TICKER / TESTIMONIALS (Sticky notes aesthetic) -->
+<section class="w-full my-6 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg stamp-shadow-sm rotate-2">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</span>
+<h3 class="font-headline-md text-headline-md text-primary">Scout Field Logs &amp; Taste Dispatches</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant hidden md:inline">Tape verified entries from the field</span>
+</div>
+<!-- Sticky Notes Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter-desktop items-start">
+<!-- Note 1 -->
+<div class="relative bg-surface-container-lowest p-5 rounded-2xl stamp-shadow rotate-[-1.5deg] hover:rotate-0 transition-transform">
+<!-- Faux Masking Tape Top Bar -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-tertiary-fixed/70 -rotate-2 rounded-sm stamp-shadow-sm pointer-events-none"></div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pb-2 border-b-2 border-primary/10">
+<span class="font-bold text-primary">@ramen_nomad</span>
+<span>Logged 22m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-3 italic">
+          "The Crave Compass sent me down an alley I've walked past 50 times. That charred scallion bowl legitimately cured my creative block. 10/10."
+        </p>
+<div class="flex items-center justify-between mt-4 pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="text-secondary font-bold">🎯 Noodle Craft Lab</span>
+<span>Badge Unlocked 🏆</span>
+</div>
+</div>
+<!-- Note 2 -->
+<div class="relative bg-surface-container-lowest p-5 rounded-2xl stamp-shadow rotate-[1.5deg] hover:rotate-0 transition-transform">
+<!-- Faux Masking Tape Top Bar -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-secondary-fixed/70 rotate-1 rounded-sm stamp-shadow-sm pointer-events-none"></div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pb-2 border-b-2 border-primary/10">
+<span class="font-bold text-primary">@crust_craver_sf</span>
+<span>Logged 1h ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-3 italic">
+          "Completed Step 3 of the Sourdough Quest! The air pockets in this crust are astronomical. The algorithm truly understands hydration percentages."
+        </p>
+<div class="flex items-center justify-between mt-4 pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="text-secondary font-bold">🥖 Ferment &amp; Flame</span>
+<span>Level 5 Scout 🌟</span>
+</div>
+</div>
+<!-- Note 3 -->
+<div class="relative bg-surface-container-lowest p-5 rounded-2xl stamp-shadow rotate-[-1deg] hover:rotate-0 transition-transform">
+<!-- Faux Masking Tape Top Bar -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-tertiary-fixed-dim/50 rotate-3 rounded-sm stamp-shadow-sm pointer-events-none"></div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pb-2 border-b-2 border-primary/10">
+<span class="font-bold text-primary">@maya_eats</span>
+<span>Logged 3h ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-3 italic">
+          "Hit the 'Need Serious Heat' roulette button at 10 PM. Was eating Sichuan spicy dry-pot with fresh lotus root in under 20 minutes. Pure magic."
+        </p>
+<div class="flex items-center justify-between mt-4 pt-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="text-secondary font-bold">🌶️ Chili Heaven</span>
+<span>Verified Visit 🎖️</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: FAST FOODIE PASSPORT CTA CALLOUT -->
+<section class="w-full my-6 bg-primary-container text-surface-bright rounded-2xl p-6 md:p-8 stamp-shadow-md relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex flex-col gap-2 max-w-xl z-10">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-label-sm text-label-sm w-max font-bold">
+<span class="material-symbols-outlined text-[16px]">badge</span>
+        Scout Member Perks
+      </div>
+<h3 class="font-headline-lg text-headline-lg text-surface-bright">
+        Ready to Build Your Flavor Passport?
+      </h3>
+<p class="font-body-md text-body-md text-surface-dim">
+        Stamp verified dishes, unlock secret chef menus, and earn field scout badges in every neighborhood you explore.
+      </p>
+</div>
+<div class="flex items-center gap-3 flex-shrink-0 z-10">
+<button class="px-6 py-3.5 bg-secondary text-surface-bright rounded-xl font-label-lg text-label-lg stamp-shadow transition-transform hover:-translate-y-0.5 active:translate-y-0.5 font-bold" type="button">
+        Claim Scout Passport 📔
+      </button>
+</div>
+<!-- Decorative Stamp Watermark in Background -->
+<div class="absolute -right-8 -bottom-10 text-white/5 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[200px]">military_tech</span>
+</div>
+</section>
+</div>
+<!-- Interactive Micro-Interactions Script -->
+<script>
+  // Dynamic Flavor Radar Preset Shifter
+  const radarShape = document.getElementById('radar-shape');
+  const presets = document.querySelectorAll('.taste-preset');
+
+  const presetCoords = {
+    umami: '150,80 250,110 230,240 100,230 70,120',
+    spice: '150,35 240,130 180,220 70,190 40,110',
+    crispy: '150,60 260,115 190,240 120,200 60,130'
+  };
+
+  presets.forEach(btn => {
+    btn.addEventListener('click', () => {
+      presets.forEach(b => {
+        b.classList.remove('bg-secondary-fixed', 'text-on-secondary-fixed', 'stamp-shadow-sm', 'font-bold');
+        b.classList.add('bg-surface-container', 'text-primary', 'font-semibold');
+      });
+      btn.classList.add('bg-secondary-fixed', 'text-on-secondary-fixed', 'stamp-shadow-sm', 'font-bold');
+      btn.classList.remove('bg-surface-container');
+
+      const mode = btn.dataset.mode;
+      if (presetCoords[mode] && radarShape) {
+        radarShape.setAttribute('points', presetCoords[mode]);
+      }
+    });
+  });
+
+  // Heart Save Button Toggle
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const isSaved = icon.style.fontVariationSettings.includes("'FILL' 1");
+      if (isSaved) {
+        icon.style.fontVariationSettings = "'FILL' 0";
+        icon.classList.remove('text-secondary');
+      } else {
+        icon.style.fontVariationSettings = "'FILL' 1";
+        icon.classList.add('text-secondary');
+        btn.classList.add('scale-125');
+        setTimeout(() => btn.classList.remove('scale-125'), 200);
+      }
+    });
+  });
+
+  // Crave Roulette Filter Toggle Simulation
+  const scoutCounter = document.getElementById('live-scout-count');
+  const scoutCounts = ['14 scouts eating nearby', '28 scouts logging dumplings', '9 scouts craving spice right now', '31 scouts hunting patios'];
+
+  document.querySelectorAll('.filter-pill').forEach((pill, idx) => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach(p => {
+        p.classList.remove('bg-secondary-fixed', 'text-on-secondary-fixed');
+        p.classList.add('bg-surface-container-lowest', 'text-primary');
+      });
+      pill.classList.remove('bg-surface-container-lowest');
+      pill.classList.add('bg-secondary-fixed', 'text-on-secondary-fixed');
+      if (scoutCounter) {
+        scoutCounter.textContent = scoutCounts[idx % scoutCounts.length];
+      }
+    });
+  });
+</script></main><footer class="w-full mt-space-xl border-t-[2.5px] border-primary bg-surface-container-low"><div class="w-full bg-secondary-fixed text-on-secondary-fixed py-1.5 px-space-md border-b-[2px] border-primary overflow-hidden"><div class="flex items-center justify-center gap-4 text-center font-label-sm text-label-sm uppercase tracking-wider"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">verified</span> 100% Verified Taste Quests</span><span class="text-primary-container font-black">•</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">menu_book</span> Field Notes Dispatched Hourly</span><span class="text-primary-container font-black">•</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">local_fire_department</span> Trending Flavor: Brown Butter Miso Crunch</span></div></div><div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm"><div class="p-1.5 bg-primary rounded-lg text-on-primary font-label-sm text-label-sm uppercase font-bold tracking-widest stamp-shadow-sm -rotate-2">CRAVE-LAB</div><span class="font-label-sm text-label-sm text-on-surface-variant">CraveQuest Field Research Labs • Curated with appetite</span></div><div class="flex items-center gap-space-lg font-label-sm text-label-sm text-on-surface-variant"><a class="hover:text-primary transition-colors" href="#">Field Guide Rules</a><a class="hover:text-primary transition-colors" href="#">Chef Registry</a><a class="hover:text-primary transition-colors" href="#">Scout Passport</a><span class="text-outline-variant">© 2025 CraveQuest Inc.</span></div></div></footer><script src="../../cravequest-api.js" defer></script><script src="../../cravequest-app.js" defer></script></body></html>

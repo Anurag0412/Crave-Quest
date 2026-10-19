@@ -96,4 +96,27 @@ node --env-file=.env --test test/api.integration.test.js
 Remove-Item Env:CRAVEQUEST_INTEGRATION
 ```
 
-The integration test refuses to proceed unless the configured database is named `cravequest_dev` and PostgreSQL is version 15 or newer. It performs no writes, migrations, seeds, or table resets. Backend integration is complete for the available routes; the repository currently has no frontend API service files, so frontend API wiring remains separate work. The existing UI has not been changed.
+The integration test refuses to proceed unless the configured database is named `cravequest_dev` and PostgreSQL is version 15 or newer. It performs no writes, migrations, seeds, or table resets.
+
+### Frontend preview and API integration
+
+The supplied frontend is a set of static Stitch-exported HTML screens; it has no framework, router, package manifest, or build step. The existing visual assets and design tokens are preserved. A small browser API client connects outlet selection, menu browsing, recommendations, and dish details to the backend. Outlet choice and recommendation criteria live only in the current browser session. The sensory and distance controls remain visual prototypes because the API and schema do not support those preferences.
+
+Start PostgreSQL and the backend first. From the repository root, use a second terminal to run the frontend preview server:
+
+```powershell
+node frontend/dev-server.js
+```
+
+Open `http://localhost:4173`. The preview serves the existing HTML files and forwards same-origin `/api/*` requests to `http://127.0.0.1:3000`. To use another backend origin, set `CRAVEQUEST_API_ORIGIN` before starting the preview server. The browser receives API data only; database credentials remain in the backend environment.
+
+The home screen lists and filters current outlet menus. The Flavor Quiz passes supported category and budget preferences plus hard allergen, ingredient, and verified dietary-tag requirements to the Feed & Matches screen, which sends them to `POST /api/recommendations`. Its dietary-tag selector only offers tags marked verified by the selected outlet. The Feed & Matches screen shows API scores, reason codes, and data-quality warnings. Selecting a dish opens its live detail response. Missing ingredient, allergen, or dietary data is shown as unknown/incomplete and is never presented as proof of safety. Booking, feedback, and discovery writes are not available through the current API.
+
+Run the frontend API client tests from the repository root:
+
+```powershell
+node frontend/test/api-client.test.js
+node frontend/test/dev-server.test.js
+```
+
+These directly executable Node test files mock `fetch` and the upstream API; they do not use PostgreSQL or perform browser end-to-end checks. Run backend unit tests separately with `npm test` from `backend/`. The opt-in PostgreSQL API integration test remains read-only and must be explicitly enabled as documented above.

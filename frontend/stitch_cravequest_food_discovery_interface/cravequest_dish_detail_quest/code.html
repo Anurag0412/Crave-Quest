@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>CraveQuest — Food Explorer Field Log</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.grid-paper-bg{background-color:#FDFBF7;background-image:linear-gradient(to right,#E2EAD8 1px,transparent 1px),linear-gradient(to bottom,#E2EAD8 1px,transparent 1px);background-size:24px 24px;}.stamp-shadow-sm{box-shadow:2px 2px 0px #1B4332;}.stamp-shadow{box-shadow:3px 3px 0px #1B4332;}.stamp-shadow-md{box-shadow:4px 4px 0px #1B4332;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#e5e9e3", "secondary": "#006c48", "primary-container": "#1b4332", "primary-fixed": "#c1ecd4", "surface-container-highest": "#dfe4dd", "surface-container-lowest": "#ffffff", "surface-dim": "#d7dbd5", "inverse-primary": "#a5d0b9", "tertiary-fixed-dim": "#e7c268", "on-secondary": "#ffffff", "on-tertiary-fixed": "#251a00", "on-tertiary-container": "#c4a24c", "tertiary": "#322400", "surface-container": "#ebefe8", "outline-variant": "#c1c8c2", "outline": "#717973", "inverse-on-surface": "#edf2eb", "on-secondary-fixed-variant": "#005235", "secondary-container": "#92f7c3", "on-secondary-container": "#00734d", "surface-bright": "#f6fbf4", "primary-fixed-dim": "#a5d0b9", "surface-variant": "#dfe4dd", "error": "#ba1a1a", "on-primary-fixed-variant": "#274e3d", "on-primary-fixed": "#002114", "primary": "#012d1d", "error-container": "#ffdad6", "secondary-fixed": "#92f7c3", "on-secondary-fixed": "#002113", "on-background": "#181d19", "inverse-surface": "#2d322d", "surface-tint": "#3f6653", "on-surface": "#181d19", "on-tertiary-fixed-variant": "#5a4400", "on-error": "#ffffff", "on-primary-container": "#86af99", "secondary-fixed-dim": "#75daa8", "tertiary-container": "#4c3900", "tertiary-fixed": "#ffdf96", "background": "#f6fbf4", "surface-container-low": "#f0f5ee", "on-error-container": "#93000a", "on-primary": "#ffffff", "on-surface-variant": "#414844", "on-tertiary": "#ffffff", "surface": "#f6fbf4" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "gutter-desktop": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "gutter-mobile": "0.75rem", "space-md": "1rem", "space-lg": "1.5rem", "gutter": "1.25rem", "margin-desktop": "3rem", "space-xl": "2.5rem", "margin": "1.5rem" }, "fontFamily": { "headline-lg-mobile": ["Bricolage Grotesque"], "headline-lg": ["Bricolage Grotesque"], "display-lg": ["Bricolage Grotesque"], "headline-sm": ["Bricolage Grotesque"], "label-lg": ["Space Grotesk"], "body-md": ["Plus Jakarta Sans"], "label-md": ["Space Grotesk"], "body-lg": ["Plus Jakarta Sans"], "display-lg-mobile": ["Bricolage Grotesque"], "body-sm": ["Plus Jakarta Sans"], "headline-md": ["Bricolage Grotesque"], "label-sm": ["Space Grotesk"] }, "fontSize": { "headline-lg-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "headline-sm": ["20px", { "lineHeight": "26px", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "display-lg-mobile": ["38px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-md": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }] } } } };</script></head><body data-cq-screen="detail" class="grid-paper-bg font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 bg-[#FDFBF7]/95 backdrop-blur-md border-b-[2.5px] border-primary"><div class="h-20 max-w-[1280px] mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg flex-shrink-0"><a class="flex items-center gap-space-sm group" href="#"><img alt="CraveQuest Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VDRKH7tYEsnAJtLicgABmyJU9zFUP9TxTW_Fd0C3cGmFyzVm5HPnSwNImb3nHHZchUt6f2idfy09VzrDfc7FjJwCZQvO_I4B7M13pZd5hEkOKn4pa2Ao3bf7NRGkzqnwULxe-8ihS94w3GD-yuUffK5gQ1zaKV5A19NRnMsL4tPR44XSq8B8ayh8np__cvG3rEsX3ntg9aYvACnvNh7tmia73rzVCTkFOGenticdKfUcq8iqfHroKyhXs"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none group-hover:text-secondary transition-colors">CRAVEQUEST</span><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase leading-none mt-1">Field Journal</span></div></a><div class="hidden xl:flex items-center relative w-72 lg:w-80"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 bg-surface-container-lowest border-[2px] border-primary rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-0 stamp-shadow-sm" placeholder="What flavor are you hunting today?" type="text"/></div></div><nav class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-xs py-space-xs rounded-full border-[2px] border-primary stamp-shadow-sm" data-active-classes="bg-primary-container text-on-primary-container stamp-shadow-sm border-[2px] border-primary font-bold"><a class="px-space-md py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" data-path="discover" href="#">Discover</a><a class="px-space-md py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" data-path="flavor-quiz" href="#">Flavor Quiz</a><a class="px-space-md py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" data-path="feed-matches" href="#">Feed &amp; Matches</a><a aria-current="page" class="px-space-md py-1.5 rounded-full transition-all bg-primary-container text-on-primary-container stamp-shadow-sm border-[2px] border-primary font-bold" data-path="badge-quest" href="#">Badge Quest</a></nav><div class="flex items-center gap-space-sm flex-shrink-0"><div class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full border-[2px] border-primary stamp-shadow-sm font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px] text-tertiary-container">stars</span><span>Lvl 4 Scout (12/20)</span></div><button class="hidden md:flex items-center gap-1 px-3 py-1 bg-surface-container-lowest text-on-surface rounded-full border-[2px] border-primary stamp-shadow-sm font-label-sm text-label-sm hover:bg-surface-container-high hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-[16px] text-secondary">location_on</span><span>SF, CA</span><span class="material-symbols-outlined text-[14px]">expand_more</span></button><div class="flex items-center gap-space-xs pl-1 border-l-2 border-primary/20"><div class="relative flex items-center gap-2 cursor-pointer"><div class="relative"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border-[2px] border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFa4cY_JZ5btWVg7mVTN2u7t7UkyUQA1zjD8-b6is0sduhpXcQifqlYa0UoEuHFa5vsrNRG25NVY1xvUCJCWErMlcCLi4CwzLLsgv4e95M8DDB3gIbJVHxL7xs7j2F_EaFCSz-GU6GF9RGeZ39DomeKXXG4jPhSfTRh0rtYuKa-fNwZUIKIen4zq3U-VPKpIuT7QGSfA_HbzET06bEA8kyyHqkzypYGR-ikGzxFXGq5mPHiaD898ZQzA"/><span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-secondary rounded-full border border-surface-container-lowest"></span></div><span class="hidden sm:inline font-label-md text-label-md text-primary font-bold">Sam P.</span></div></div></div></div></header><main class="w-full pt-20 flex-1 max-w-[1280px] mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Breadcrumb & Quick Actions -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm py-space-md border-b-2 border-primary/20">
+<div class="flex items-center gap-space-xs flex-wrap font-label-md text-label-md text-on-surface-variant">
+<a class="inline-flex items-center gap-1 font-bold text-primary hover:text-secondary transition-colors bg-surface-container-low px-2.5 py-1 rounded-lg border-2 border-primary stamp-shadow-sm active:translate-x-0.5 active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+<span>Back to Feed</span>
+</a>
+<span class="text-outline-variant font-bold">/</span>
+<span class="hover:text-primary cursor-pointer">Recommendations</span>
+<span class="text-outline-variant font-bold">/</span>
+<span class="font-bold text-primary">Dragon Whisker Noodle Co.</span>
+<span class="text-outline-variant font-bold">/</span>
+<span class="text-secondary font-bold">Sizzling Chili-Oil Biang Biang Noodles</span>
+</div>
+<div class="flex items-center gap-space-xs self-start sm:self-auto">
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-lowest text-primary rounded-xl border-2 border-primary stamp-shadow-sm hover:bg-surface-container-high transition-all active:translate-x-0.5 active:translate-y-0.5 font-label-md text-label-md" id="bookmarkBtn">
+<span class="material-symbols-outlined text-[18px] text-tertiary-container" id="bookmarkIcon">bookmark_border</span>
+<span>Save to Field Log</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-lowest text-primary rounded-xl border-2 border-primary stamp-shadow-sm hover:bg-surface-container-high transition-all active:translate-x-0.5 active:translate-y-0.5 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px] text-secondary">share</span>
+<span>Dispatch Log</span>
+</button>
+</div>
+</div>
+<!-- Primary Split-Pane View -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop mt-space-lg items-start">
+<!-- LEFT COLUMN: Dish Spotlight & Sensory Anatomy (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<!-- Dish Master Card -->
+<article class="bg-surface-container-lowest rounded-2xl border-[3px] border-primary stamp-shadow-md overflow-hidden relative">
+<!-- Floating Sticker Elements -->
+<div class="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
+<div class="bg-tertiary-fixed text-on-tertiary-fixed font-headline-md text-headline-md px-3.5 py-1 rounded-xl border-2 border-primary stamp-shadow-sm rotate-3 flex items-center gap-1 font-black">
+<span>$16.50</span>
+</div>
+<div class="bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm uppercase px-2.5 py-1 rounded-full border-2 border-primary stamp-shadow-sm -rotate-2 flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-[15px] text-secondary">verified</span>
+<span>★ 98% Match for Sam P.</span>
+</div>
+</div>
+<!-- Featured Dish Photo Canvas -->
+<div class="relative w-full h-80 sm:h-96 border-b-[3px] border-primary bg-surface-container overflow-hidden group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up artisanal shot of wide hand-ripped Chinese biang biang noodles draped in dark chili oil, crushed roasted red Sichuan peppers, charred scallions, minced garlic shoots, and deep emerald green bok choy leaves in a speckled ceramic bowl. Warm atmospheric dining room ambient lighting, tactile food explorer aesthetic with sharp textural definition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYC9EELgwc-CSWiOs8Wzbtk3iOEZD3ZmMgaRFu3zN4WFSle_LzqR1QhsK3CTk5QY2dKS8o3lhjpV3Vq_Ra2I9gLk9_xlSEZBQVqJDMqrZUTnpKc8dyg1El0YehLjitR8BfrZ7rDD3kIfBUc7OvWHxGvic68APxOJuJeOjH_kB6oTzF6VcPc2QWNC9vqOeC8pTG0h2NGUepFhEwx1FwhO0VNdaAp1WghuAmQjMlPUUXuPGAFg3n1GV-Xg"/>
+<div class="absolute bottom-3 left-3 bg-primary text-on-primary font-label-sm text-label-sm px-2.5 py-1 rounded-md border border-primary-fixed uppercase tracking-wider font-semibold">
+            Dish Specimen #842-NW
+          </div>
+</div>
+<!-- Card Body -->
+<div class="p-space-md sm:p-space-lg flex flex-col gap-space-md">
+<div>
+<div class="flex items-center gap-2 mb-1.5 flex-wrap">
+<span class="px-2 py-0.5 bg-primary-fixed text-on-primary-fixed-variant rounded-md font-label-sm text-label-sm border border-primary/40 font-bold uppercase">Shaanxi Heritage Craft</span>
+<span class="px-2 py-0.5 bg-surface-container-high text-on-surface-variant rounded-md font-label-sm text-label-sm border border-primary/20">Hand-Pulled Daily</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight leading-tight">
+              Sizzling Chili-Oil Biang Biang Hand-Ripped Noodles
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+              Extra-wide, ribbon-thick wheat noodles pulled fresh per ticket, dropped directly into boiling cauldrons, then showered with coarse crushed chili, garlic, and scallions before a bubbling ladle of smoking-hot organic rapeseed oil is poured tableside.
+            </p>
+</div>
+<!-- Sensory Breakdown Ledger -->
+<div class="bg-surface-container-low rounded-xl p-space-md border-2 border-primary stamp-shadow-sm">
+<div class="flex items-center justify-between pb-2 mb-3 border-b border-primary/20">
+<span class="font-label-md text-label-md text-primary font-bold uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">science</span>
+                Sensory Profile Ledger
+              </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Validated by 34 Scouts</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+<div class="bg-surface-container-lowest p-2.5 rounded-lg border border-primary/40 flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Texture</span>
+<span class="font-headline-sm text-headline-sm text-primary">Chewy / Q-Bomb</span>
+<span class="text-body-sm text-body-sm text-secondary font-bold">Elastic Snap: 9.8</span>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded-lg border border-primary/40 flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Heat Spectrum</span>
+<div class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+<span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+<span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+<span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+<span class="material-symbols-outlined text-[18px] text-outline-variant">local_fire_department</span>
+</div>
+<span class="text-body-sm text-body-sm text-on-surface font-semibold">4 / 5 Fire Seeds</span>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded-lg border border-primary/40 flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Aroma Key</span>
+<span class="font-headline-sm text-headline-sm text-primary">Charred Allium</span>
+<span class="text-body-sm text-body-sm text-on-surface-variant">Toasted Star Anise</span>
+</div>
+</div>
+</div>
+<!-- Ingredients & Provenance Field Notes -->
+<div class="border-2 border-primary/30 rounded-xl p-space-md bg-surface-container-lowest">
+<h3 class="font-label-md text-label-md uppercase font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary-container">history_edu</span>
+              Ingredients &amp; Botanical Provenance
+            </h3>
+<ul class="divide-y divide-primary/10 font-body-sm text-body-sm">
+<li class="py-1.5 flex justify-between items-center">
+<span class="font-semibold text-on-surface">Double-Zero High-Gluten Wheat Dough</span>
+<span class="text-on-surface-variant text-right">Cold-rested 14h, hand-slapped to order</span>
+</li>
+<li class="py-1.5 flex justify-between items-center">
+<span class="font-semibold text-on-surface">Sichuan Hanyuan Red Peppercorns</span>
+<span class="text-on-surface-variant text-right">Wok-toasted, coarse stone-mortar pestled</span>
+</li>
+<li class="py-1.5 flex justify-between items-center">
+<span class="font-semibold text-on-surface">Flash-Fried Garlic Shoots &amp; Bok Choy</span>
+<span class="text-on-surface-variant text-right">Organically grown in Sunol Ag Park</span>
+</li>
+<li class="py-1.5 flex justify-between items-center">
+<span class="font-semibold text-on-surface">Aged Black Vinegar &amp; Dark Mushroom Soy</span>
+<span class="text-on-surface-variant text-right">Zhenjiang aged 5-year reserve base</span>
+</li>
+</ul>
+<div class="mt-3 pt-3 border-t border-primary/20 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full font-label-sm text-label-sm border border-primary/40 font-semibold">Dairy-Free</span>
+<span class="px-2.5 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full font-label-sm text-label-sm border border-primary/40 font-semibold">Peanut-Free</span>
+<span class="px-2.5 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-label-sm text-label-sm border border-primary/40 font-semibold">Halal-Friendly Beef Sub Available</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Community Scout Notes & Sticky Testimonials -->
+<section class="bg-surface-container-low p-space-md sm:p-space-lg rounded-2xl border-[3px] border-primary stamp-shadow-md">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[24px]">rate_review</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">Field Dispatches from Verified Scouts</h2>
+</div>
+<span class="bg-surface-container-highest px-2 py-1 rounded-md text-label-sm font-label-sm text-primary font-bold border border-primary/20">48 Entries</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Sticky Note 1 -->
+<div class="bg-[#FFFDE7] p-space-md rounded-xl border-2 border-primary stamp-shadow -rotate-1 relative flex flex-col justify-between">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-secondary-fixed/60 border border-primary/30 rounded-sm"></div>
+<p class="font-body-md text-body-md text-on-surface italic leading-snug">
+              “The chili sizzle when they pour the hot oil over the spices at the counter is unreal. 10/10 chew on the thick ribbons. Don’t wear white shirts!”
+            </p>
+<div class="mt-3 pt-2 border-t border-primary/20 flex items-center justify-between font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-primary">Elena K.</span>
+<span class="px-1.5 py-0.2 bg-tertiary-fixed text-on-tertiary-fixed rounded text-[10px] font-black border border-primary/30">LVL 6 SCOUT</span>
+</div>
+<span class="text-outline">Visited 2 days ago</span>
+</div>
+</div>
+<!-- Sticky Note 2 -->
+<div class="bg-[#F0FDF4] p-space-md rounded-xl border-2 border-primary stamp-shadow rotate-1 relative flex flex-col justify-between">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-tertiary-fixed/60 border border-primary/30 rounded-sm"></div>
+<p class="font-body-md text-body-md text-on-surface italic leading-snug">
+              “Ask for extra pickled mustard greens on the side. The acidity cuts through the heavy spiced tallow oil brilliantly. Best noodle bite in the Mission.”
+            </p>
+<div class="mt-3 pt-2 border-t border-primary/20 flex items-center justify-between font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-primary">Marcus T.</span>
+<span class="px-1.5 py-0.2 bg-secondary-fixed text-on-secondary-fixed-variant rounded text-[10px] font-black border border-primary/30">LVL 9 VETERAN</span>
+</div>
+<span class="text-outline">Visited Yesterday</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: Match Science & Restaurant Dossier & Booking (5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg">
+<!-- Card: AI Match Compass Breakdown -->
+<div class="bg-surface-container-lowest rounded-2xl border-[3px] border-primary stamp-shadow-md p-space-md sm:p-space-lg">
+<div class="flex items-center justify-between pb-3 border-b-2 border-primary/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[24px]">explore</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">The Match Breakdown</h2>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-primary-fixed text-primary font-bold rounded-full border border-primary/40">AI Sensory Fit</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-3">
+          Calculated against your taste quiz preferences for high-gluten elasticity, fermented vinegar tang, and high mala spice tolerance.
+        </p>
+<!-- Match Meters -->
+<div class="flex flex-col gap-3 mt-4">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm font-bold text-primary mb-1">
+<span>Texture Alignment (Elastic / Chewy)</span>
+<span>100% Match</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full border border-primary overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm font-bold text-primary mb-1">
+<span>Spice Profile (Sichuan Peppercorn + Crispy Garlic)</span>
+<span>95% Match</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full border border-primary overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 95%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm font-bold text-primary mb-1">
+<span>Price Point Sweet Spot (&lt; $20.00 SF Scout Target)</span>
+<span>Exact Hit</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full border border-primary overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 90%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Badge Quest Challenge Card -->
+<div class="bg-surface-container-lowest rounded-2xl border-[3px] border-primary stamp-shadow-md p-space-md sm:p-space-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-tertiary-fixed/30 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed border-2 border-primary stamp-shadow-sm flex items-center justify-center -rotate-3 flex-shrink-0">
+<span class="material-symbols-outlined text-[28px] text-tertiary-container">military_tech</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Active Quest Milestone 3</span>
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">Spice Trail Scout</h3>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-3">
+          Check in with this dish to claim the limited-edition <strong class="text-primary">“Noodle Nirvana”</strong> enamel badge &amp; deposit <strong class="text-secondary">+100 XP</strong> directly into your Scout Ledger.
+        </p>
+<!-- Quest Progress Tracker -->
+<div class="mt-4 p-3 bg-surface-container rounded-xl border-2 border-primary stamp-shadow-sm">
+<div class="flex justify-between font-label-sm text-label-sm font-bold text-primary mb-1.5">
+<span>Quest Progress: 2 of 3 Discovered</span>
+<span class="text-secondary">66%</span>
+</div>
+<div class="w-full h-3.5 bg-surface-container-lowest rounded-full border border-primary overflow-hidden flex">
+<div class="h-full bg-secondary w-2/3 border-r-2 border-primary"></div>
+<div class="h-full bg-transparent w-1/3"></div>
+</div>
+<div class="flex items-center justify-between mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span>✓ Dan Dan Mian</span>
+<span>✓ Mapo Rice Bowl</span>
+<span class="font-bold text-primary">★ Biang Biang (Current)</span>
+</div>
+</div>
+</div>
+<!-- Restaurant Dossier & Table Booking -->
+<div class="bg-surface-container-lowest rounded-2xl border-[3px] border-primary stamp-shadow-md p-space-md sm:p-space-lg">
+<div class="flex items-start justify-between gap-space-sm pb-3 border-b-2 border-primary/20">
+<div>
+<span class="font-label-sm text-label-sm uppercase font-bold text-secondary">Host Outpost</span>
+<h2 class="font-headline-sm text-headline-sm text-primary leading-tight">Dragon Whisker Noodle Co.</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              428 Valencia St, Mission District, SF
+            </p>
+</div>
+<div class="w-12 h-12 rounded-xl border-2 border-primary bg-primary flex items-center justify-center text-on-primary font-headline-sm stamp-shadow-sm flex-shrink-0">
+            龍
+          </div>
+</div>
+<!-- Mini Map & Neighborhood Distance Tag -->
+<div class="mt-3 relative w-full h-36 rounded-xl border-2 border-primary overflow-hidden stamp-shadow-sm">
+<div class="w-full h-full bg-cover bg-center" data-location="428 Valencia St, San Francisco, CA" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDE0cWoLfqk2OYB2c3pnm2LYyvr6kSLgaInBMUTavIHwexlHB8XXnU0xV7m7r_BkAT_xGmh_ssomCcjrSyVq3CeEW8_am3a-7iCqomHUFaSIP8HCuUHQSU0uuz2O3PDSn34TKd1gXwSkoxigPe5brn9bSeIoyOEZ3I95ufLv2Odf24wnfp6HY9sxlVwAf45au2SU42NOHs4WQm3jMV7gTuZBZAqi77KO6Oy8xeQfhI8xPIIu9CJ8EVsdQ')"></div>
+<div class="absolute bottom-2 left-2 bg-surface-container-lowest/95 backdrop-blur-sm border border-primary px-2.5 py-1 rounded-md font-label-sm text-label-sm text-primary font-bold shadow-sm">
+            📍 0.6 mi away • 12 min walk
+          </div>
+<div class="absolute top-2 right-2 bg-secondary text-on-secondary px-2 py-0.5 rounded-full font-label-sm text-label-sm font-semibold flex items-center gap-1 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+<span>Open until 10:30 PM</span>
+</div>
+</div>
+<!-- Seating Selector -->
+<div class="mt-4 flex flex-col gap-2">
+<label class="font-label-md text-label-md font-bold text-primary flex items-center justify-between">
+<span>Reserve Table for Tonight (Party of 2)</span>
+<span class="text-on-surface-variant font-normal text-label-sm">Rush Ending Soon</span>
+</label>
+<div class="grid grid-cols-3 gap-2" id="timeSlots">
+<button class="time-slot-btn py-2 px-2 text-center rounded-xl border-2 border-primary font-label-md text-label-md bg-secondary-fixed text-on-secondary-fixed-variant font-bold stamp-shadow-sm transition-all hover:bg-secondary hover:text-on-secondary active:translate-x-0.5 active:translate-y-0.5" type="button">
+              7:15 PM
+            </button>
+<button class="time-slot-btn py-2 px-2 text-center rounded-xl border-2 border-primary font-label-md text-label-md bg-surface-container-low text-on-surface font-semibold stamp-shadow-sm transition-all hover:bg-secondary-fixed active:translate-x-0.5 active:translate-y-0.5" type="button">
+              7:45 PM
+            </button>
+<button class="time-slot-btn py-2 px-2 text-center rounded-xl border-2 border-primary font-label-md text-label-md bg-surface-container-low text-on-surface font-semibold stamp-shadow-sm transition-all hover:bg-secondary-fixed active:translate-x-0.5 active:translate-y-0.5" type="button">
+              8:15 PM
+            </button>
+</div>
+</div>
+<!-- CTA Action Buttons -->
+<div class="mt-space-md flex flex-col gap-2.5">
+<button class="w-full py-3.5 px-4 bg-secondary text-on-secondary rounded-xl border-[2.5px] border-primary font-label-lg text-label-lg font-bold stamp-shadow transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_#1B4332] active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_#1B4332] flex items-center justify-center gap-2" id="bookTableBtn">
+<span>Lock In Table &amp; Claim Dish Badge</span>
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+</button>
+<button class="w-full py-3 px-4 bg-tertiary-fixed text-on-tertiary-fixed rounded-xl border-2 border-primary font-label-md text-label-md font-bold stamp-shadow-sm transition-all hover:bg-tertiary-fixed-dim active:translate-x-0.5 active:translate-y-0.5 flex items-center justify-center gap-2" id="pickupBtn">
+<span>Order Direct Pickup ($16.50)</span>
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+</button>
+<a class="w-full py-2.5 px-3 text-center bg-surface-container-low text-primary font-label-sm text-label-sm font-bold rounded-xl border border-primary/40 hover:bg-surface-container-high transition-colors flex items-center justify-center gap-1" href="#">
+<span>Explore 8 Other Matched Dishes at Dragon Whisker</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Booking Confirmation Dialog Modal (Hidden by Default) -->
+<div class="fixed inset-0 bg-primary/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" id="bookingModal">
+<div class="bg-surface-container-lowest max-w-md w-full rounded-2xl border-[3.5px] border-primary stamp-shadow-md p-space-lg relative flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant border-2 border-primary flex items-center justify-center stamp-shadow-sm mb-3">
+<span class="material-symbols-outlined text-[36px] text-secondary">verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Table Confirmed &amp; Quest Logged!</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+        Reservation secured for <strong class="text-primary">Party of 2 at 7:15 PM</strong> at Dragon Whisker Noodle Co. Show this digital pass at the host stand to automatically unlock your badge quest.
+      </p>
+<div class="my-4 w-full p-3 bg-surface-container-low rounded-xl border-2 border-dashed border-primary/50 text-left font-label-sm text-label-sm">
+<div class="flex justify-between text-on-surface-variant">
+<span>Scout Explorer:</span>
+<span class="font-bold text-primary">Sam P. (Lvl 4)</span>
+</div>
+<div class="flex justify-between text-on-surface-variant mt-1">
+<span>Dish Reserved:</span>
+<span class="font-bold text-primary">Biang Biang ($16.50)</span>
+</div>
+<div class="flex justify-between text-on-surface-variant mt-1">
+<span>Badge Reward:</span>
+<span class="font-bold text-secondary">+100 XP upon check-in</span>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl border-2 border-primary font-label-md text-label-md font-bold stamp-shadow transition-all active:translate-x-0.5 active:translate-y-0.5" id="closeModalBtn">
+        Close &amp; Return to Field Journal
+      </button>
+</div>
+</div>
+</div>
+<script>
+  // Simple micro-interactions for time slot selection, bookmarking, and reservation modal
+  const timeBtns = document.querySelectorAll('.time-slot-btn');
+  timeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      timeBtns.forEach(b => {
+        b.classList.remove('bg-secondary-fixed', 'text-on-secondary-fixed-variant');
+        b.classList.add('bg-surface-container-low', 'text-on-surface');
+      });
+      btn.classList.remove('bg-surface-container-low', 'text-on-surface');
+      btn.classList.add('bg-secondary-fixed', 'text-on-secondary-fixed-variant');
+    });
+  });
+
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  const bookmarkIcon = document.getElementById('bookmarkIcon');
+  let isBookmarked = false;
+
+  bookmarkBtn.addEventListener('click', () => {
+    isBookmarked = !isBookmarked;
+    if (isBookmarked) {
+      bookmarkIcon.textContent = 'bookmark';
+      bookmarkIcon.style.fontVariationSettings = "'FILL' 1";
+      bookmarkBtn.classList.add('bg-tertiary-fixed');
+    } else {
+      bookmarkIcon.textContent = 'bookmark_border';
+      bookmarkIcon.style.fontVariationSettings = "'FILL' 0";
+      bookmarkBtn.classList.remove('bg-tertiary-fixed');
+    }
+  });
+
+  const bookTableBtn = document.getElementById('bookTableBtn');
+  const bookingModal = document.getElementById('bookingModal');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+
+  bookTableBtn.addEventListener('click', () => {
+    bookingModal.classList.remove('hidden');
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    bookingModal.classList.add('hidden');
+  });
+
+  bookingModal.addEventListener('click', (e) => {
+    if (e.target === bookingModal) {
+      bookingModal.classList.add('hidden');
+    }
+  });
+</script></main><footer class="w-full mt-space-xl border-t-[2.5px] border-primary bg-surface-container-low"><div class="w-full bg-secondary-fixed text-on-secondary-fixed py-1.5 px-space-md border-b-[2px] border-primary overflow-hidden"><div class="flex items-center justify-center gap-4 text-center font-label-sm text-label-sm uppercase tracking-wider"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">verified</span> 100% Verified Taste Quests</span><span class="text-primary-container font-black">•</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">menu_book</span> Field Notes Dispatched Hourly</span><span class="text-primary-container font-black">•</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">local_fire_department</span> Trending Flavor: Brown Butter Miso Crunch</span></div></div><div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm"><div class="p-1.5 bg-primary rounded-lg text-on-primary font-label-sm text-label-sm uppercase font-bold tracking-widest stamp-shadow-sm -rotate-2">CRAVE-LAB</div><span class="font-label-sm text-label-sm text-on-surface-variant">CraveQuest Field Research Labs • Curated with appetite</span></div><div class="flex items-center gap-space-lg font-label-sm text-label-sm text-on-surface-variant"><a class="hover:text-primary transition-colors" href="#">Field Guide Rules</a><a class="hover:text-primary transition-colors" href="#">Chef Registry</a><a class="hover:text-primary transition-colors" href="#">Scout Passport</a><span class="text-outline-variant">© 2025 CraveQuest Inc.</span></div></div></footer><script src="../../cravequest-api.js" defer></script><script src="../../cravequest-app.js" defer></script></body></html>
