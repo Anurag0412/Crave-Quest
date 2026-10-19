@@ -21,7 +21,7 @@ user_profiles ── * recommendation_feedback ── menu_dishes
 user_profiles ── * confirmed_discoveries ── dishes
 ```
 
-Every dish has exactly one owning outlet (`dishes.outlet_id`). `menu_dishes` has composite foreign keys to both `(outlet_id, menu_id)` and `(outlet_id, dish_id)`, so a menu cannot include a dish belonging to a different outlet. Recommendation feedback also references an actual menu/dish entry and its outlet. Use the `outlet_id` filter when selecting recommendations, along with the availability rules below.
+Every dish has exactly one owning outlet (`dishes.outlet_id`). `menu_dishes` has composite foreign keys to both `(outlet_id, menu_id)` and `(outlet_id, dish_id)`, so a menu cannot include a dish belonging to a different outlet. Recommendation feedback has one composite foreign key to `(outlet_id, menu_id, dish_id)` on `menu_dishes`, proving that the feedback's outlet, menu, and dish refer to the same menu entry. Use the `outlet_id` filter when selecting recommendations, along with the availability rules below.
 
 ## Recommendation availability
 
@@ -68,4 +68,4 @@ Foreign keys protect ownership and prevent cross-outlet menu entries. Checks val
 
 ## Applying locally
 
-Apply `database/migrations/001_initial_schema.sql` once to an empty PostgreSQL 15+ database, then run `database/seeds/001_demo_data.sql`. The seed script uses fixed IDs and conflict-safe inserts so it can be rerun against this schema.
+Apply `database/migrations/001_initial_schema.sql` once to an empty PostgreSQL 15+ development database, then run `database/seeds/001_demo_data.sql`. The seed uses reserved `demo-` outlet slugs and natural-key lookups; it does not assign fixed identity IDs, so existing unrelated rows with the same numeric IDs cannot be mistaken for demo records. It is repeatable against this schema. Do not use it to populate production data.

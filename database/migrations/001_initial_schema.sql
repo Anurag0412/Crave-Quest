@@ -1,4 +1,4 @@
--- CraveQuest MVP schema. PostgreSQL 14+.
+-- CraveQuest MVP schema. PostgreSQL 15+.
 -- This migration is intentionally additive and does not enable extensions.
 
 CREATE TABLE outlets (
@@ -29,6 +29,7 @@ CREATE TABLE menus (
     is_published    boolean NOT NULL DEFAULT false,
     created_at      timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT menus_outlet_id_id_unique UNIQUE (outlet_id, id),
+    CONSTRAINT menus_outlet_name_unique UNIQUE (outlet_id, name),
     CONSTRAINT menus_name_not_blank CHECK (btrim(name) <> ''),
     CONSTRAINT menus_valid_dates CHECK (valid_from IS NULL OR valid_through IS NULL OR valid_through >= valid_from)
 );
@@ -44,6 +45,7 @@ CREATE TABLE dishes (
     ingredient_data_checked_at timestamptz,
     created_at              timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT dishes_outlet_id_id_unique UNIQUE (outlet_id, id),
+    CONSTRAINT dishes_outlet_name_unique UNIQUE (outlet_id, name),
     CONSTRAINT dishes_name_not_blank CHECK (btrim(name) <> ''),
     CONSTRAINT dishes_ingredient_data_status CHECK (ingredient_data_status IN ('unknown', 'partial', 'verified_complete')),
     CONSTRAINT dishes_verified_data_has_evidence CHECK (
@@ -64,6 +66,8 @@ CREATE TABLE menu_dishes (
     is_listed       boolean NOT NULL DEFAULT true,
     created_at      timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY (menu_id, dish_id),
+    -- Candidate key used by feedback to validate outlet, menu, and dish in one FK.
+    CONSTRAINT menu_dishes_outlet_menu_dish_unique UNIQUE (outlet_id, menu_id, dish_id),
     CONSTRAINT menu_dishes_menu_outlet_fk FOREIGN KEY (outlet_id, menu_id)
         REFERENCES menus(outlet_id, id) ON DELETE CASCADE,
     CONSTRAINT menu_dishes_dish_outlet_fk FOREIGN KEY (outlet_id, dish_id)
@@ -200,10 +204,8 @@ CREATE TABLE recommendation_feedback (
     feedback        text NOT NULL,
     reason          text,
     created_at      timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT recommendation_feedback_menu_dish_fk FOREIGN KEY (menu_id, dish_id)
-        REFERENCES menu_dishes(menu_id, dish_id) ON DELETE RESTRICT,
-    CONSTRAINT recommendation_feedback_outlet_menu_fk FOREIGN KEY (outlet_id, menu_id)
-        REFERENCES menus(outlet_id, id) ON DELETE RESTRICT,
+    CONSTRAINT recommendation_feedback_menu_entry_fk FOREIGN KEY (outlet_id, menu_id, dish_id)
+        REFERENCES menu_dishes(outlet_id, menu_id, dish_id) ON DELETE RESTRICT,
     CONSTRAINT recommendation_feedback_type CHECK (feedback IN ('liked', 'disliked', 'not_interested', 'tried'))
 );
 
