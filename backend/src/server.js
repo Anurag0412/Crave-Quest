@@ -12,6 +12,7 @@ async function startServer() {
   });
   const server = createHealthServer(pool, {
     onDatabaseError: () => console.error('Database health check failed.'),
+    onApiError: () => console.error('API request failed.'),
   });
 
   await new Promise((resolve, reject) => {

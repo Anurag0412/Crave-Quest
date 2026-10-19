@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('node:http');
+const { handleApiRequest } = require('./api');
 
 function sendJson(response, statusCode, body) {
   response.writeHead(statusCode, {
@@ -11,9 +12,15 @@ function sendJson(response, statusCode, body) {
   response.end(JSON.stringify(body));
 }
 
-function createHealthServer(pool, { onDatabaseError = () => {} } = {}) {
+function createHealthServer(pool, { onDatabaseError = () => {}, onApiError = () => {} } = {}) {
   return http.createServer(async (request, response) => {
-    const url = new URL(request.url ?? '/', 'http://localhost');
+    let url;
+    try {
+      url = new URL(request.url ?? '/', 'http://localhost');
+    } catch {
+      sendJson(response, 400, { error: 'Bad request' });
+      return;
+    }
     if (request.method === 'GET' && url.pathname === '/health') {
       try {
         await pool.query('SELECT 1');
@@ -25,7 +32,12 @@ function createHealthServer(pool, { onDatabaseError = () => {} } = {}) {
       return;
     }
 
-    sendJson(response, 404, { error: 'Not found' });
+    if (url.pathname === '/health') {
+      sendJson(response, 404, { error: 'Not found' });
+      return;
+    }
+
+    await handleApiRequest(request, response, pool, { onError: onApiError });
   });
 }
 
