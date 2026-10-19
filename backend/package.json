@@ -1,0 +1,20 @@
+{
+  "name": "cravequest-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CraveQuest API service",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "start:local": "node --env-file=../.env src/server.js",
+    "db:migrate": "node src/migrate.js",
+    "db:migrate:local": "node --env-file=../.env src/migrate.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
